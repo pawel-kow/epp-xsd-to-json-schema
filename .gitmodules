@@ -1,0 +1,3 @@
+[submodule "epp-schema-files"]
+	path = epp-schema-files
+	url = https://github.com/InterNetX/epp-schema-files.git
