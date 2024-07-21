@@ -4,8 +4,8 @@ import yaml
 import json
 from yaml import Loader, Dumper
 
-input_file = "swagger.yaml"
-output_file = "reversed_schemas.json"
+input_file = "output/openapi_merged.yaml"
+output_file = "output/reversed_schemas.json"
 
 def change_paths(obj):
     if isinstance(obj, list):

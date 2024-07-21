@@ -29,14 +29,19 @@ def convert_restrictions(t, schemadef):
         schemadef["enum"] = t.enumeration
 
 def convert_simple_type(t, schemadef):
-    if t.prefixed_name in ['xs:normalizedString', 'xs:string', 'xs:token', 'xs:language']:
+    if t.prefixed_name in ['xs:normalizedString', 'xs:string', 'xs:token', 'xs:language', 'xs:base64Binary']:
         schemadef["type"] = "string"
     elif t.prefixed_name in [
-        'xs:unsignedShort', 'xs:integer', 'xs:nonNegativeInteger',
-        'xs:unsignedLong', 'xs:unsignedInt']:
+        'xs:unsignedShort', 'xs:integer', 'xs:int', 'xs:nonNegativeInteger',
+        'xs:unsignedLong', 'xs:unsignedInt', 'xs:long', 'xs:unsignedByte']:
         schemadef["type"] = "integer"
-        if t in ['xs:nonNegativeInteger', 'xs:unsignedLong', 'xs:unsignedInt']:
+        if t in ['xs:nonNegativeInteger', 'xs:unsignedLong', 'xs:unsignedInt', 'xs:unsignedByte']:
             schemadef["minimum"] = 0 if t.min_value is None or t.min_value < 0 else t.min_value
+        if t in ['xs:unsignedByte']:
+            schemadef["maximum"] = 255 if t.max_value is None or t.max_value > 255 else t.max_value
+    elif t.prefixed_name in ['xs:hexBinary']:
+        schemadef["type"] = "string"
+        schemadef["pattern"] = '[0-9a-fA-F]+'
     elif t.prefixed_name in ['xs:decimal']:
         schemadef["type"] = "number"
     elif t.prefixed_name in ['xs:dateTime']:
@@ -155,6 +160,9 @@ def convert_to_array(t, schemadef, prop_local_name):
         schemadef["properties"][prop_local_name]["maxItems"] = t.effective_max_occurs
     if t.effective_min_occurs is not None:
         schemadef["properties"][prop_local_name]["minItems"] = t.effective_min_occurs
+    if t.effective_min_occurs is not None and t.effective_min_occurs > 0:
+        schemadef.setdefault("required", [])
+        schemadef["required"] += [prop_local_name]
 
 def process_cardinality(t, schemadef, prop_local_name):
     if t.effective_max_occurs is not None:
@@ -290,43 +298,21 @@ def xsd_to_json_schema(xsd_file, json_schema=None):
     return json_schema
 
 if __name__ == "__main__":
-    xsd_file = "epp-schema-files/src/main/resources/xsd/rfc5730_shared_structure.xsd"
-    json_schema = xsd_to_json_schema(xsd_file)
-    xsd_file = "epp-schema-files/src/main/resources/xsd/rfc5730_base.xsd"
-    json_schema = xsd_to_json_schema(xsd_file, json_schema)
-    xsd_file = "epp-schema-files/src/main/resources/xsd/rfc5731_domain_name_mapping.xsd"
-    json_schema = xsd_to_json_schema(xsd_file, json_schema)
-    xsd_file = "epp-schema-files/src/main/resources/xsd/rfc5732_host_mapping.xsd"
-    json_schema = xsd_to_json_schema(xsd_file, json_schema)
-    # json_schema.update({
-    #     "properties": {
-    #         "epp": {
-    #             "$ref": "#/definitions/epp:eppType"
-    #         }
-    #     },
-    #     "required": ["epp"],
-    #     "additionalProperties": False
-    # })
+    xsd_files = [
+        "epp-schema-files/src/main/resources/xsd/rfc5730_shared_structure.xsd",
+        "epp-schema-files/src/main/resources/xsd/rfc5730_base.xsd",
+        "epp-schema-files/src/main/resources/xsd/rfc5731_domain_name_mapping.xsd",
+        "epp-schema-files/src/main/resources/xsd/rfc5732_host_mapping.xsd",
+        "epp-schema-files/src/main/resources/xsd/rfc5910_secdns.xsd"
+    ]
+
+    json_schema = None
+    for xsd_file in xsd_files:
+        json_schema = xsd_to_json_schema(xsd_file, json_schema)
+    
     json_schema.update(
         {
-            "allOf": [
-                {
-                    "properties": {
-                        "command": {
-                            "properties": {
-                                "create": {
-                                    "$ref": "#/definitions/domain:createType"
-                                }
-                            },
-                            "required": ["create"]
-                        }
-                    },
-                    "required": ["command"]
-                },
-                {
-                    "$ref": "#/definitions/epp:eppType"
-                }
-            ]
+            "$ref": "#/definitions/epp:eppType"
         })
     if not os.path.exists("output"):
         os.makedirs("output")
