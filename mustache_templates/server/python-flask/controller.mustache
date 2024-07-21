@@ -124,8 +124,12 @@ def {{operationId}}({{#allParams}}{{^isHeaderParam}}{{^isBodyParam}}{{paramName}
         {{/isMap}}
     {{/allParams}}
 
-    return {{baseName}}_impl.{{operationId}}({{#allParams}}{{paramName}}{{^-last}}, {{/-last}}{{/allParams}})
+    try:
+        return {{baseName}}_impl.{{operationId}}({{#allParams}}{{paramName}}{{^-last}}, {{/-last}}{{/allParams}})
+    except NameError as e:
+        raise NotImplementedError(f"Missing module {{baseName}}_impl: {e}")
+    except AttributeError as e:
+        raise NotImplementedError(f"Missing controller implementation function {{operationId}} in {{baseName}}_impl: {e}")
 
-    #return 'Magic'
 {{/operation}}
 {{/operations}}
