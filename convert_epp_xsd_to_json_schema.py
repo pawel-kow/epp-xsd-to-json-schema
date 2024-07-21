@@ -14,6 +14,7 @@ from xmlschema.validators import (
 import jsonschema
 import json
 import os
+import yaml
 
 def convert_restrictions(t, schemadef):
     if hasattr(t, "min_value") and t.min_value is not None:
@@ -80,8 +81,7 @@ def convert_complex_type_content(t, schemadef):
         print("..sequence")
         objschema = {
             "type": "object",
-            "properties": {},
-            "additionalProperties": False
+            "properties": {}
         }
         anyofs = []
         additional_props = []
@@ -104,22 +104,30 @@ def convert_complex_type_content(t, schemadef):
                     else:
                         additional_props_max_cnt += elem.effective_max_occurs
                 additional_props_min_cnt += elem.effective_min_occurs
-        if len(additional_props) == 1:
-            objschema.update({
-                "additionalProperties": additional_props[0],
-                "minProperties": additional_props_min_cnt
+        if len(additional_props) > 0:
+            schemadef.update({
+                "allOf": [
+                    objschema
+                ] + additional_props
             })
-        elif len(additional_props) > 1:
-            objschema.update({
-                "additionalProperties": {
-                    "anyOf": additional_props
-                },
-                "minProperties": additional_props_min_cnt
-            })
-        if len(additional_props) > 0 and additional_props_max_cnt is not None:
-            objschema.update({
-                "maxProperties": additional_props_max_cnt
-            })
+        print(f"AddProps {t} {schemadef} {additional_props}")
+        #if len(additional_props) > 0:
+        # if len(additional_props) == 1:
+        #     objschema.update({
+        #         "additionalProperties": additional_props[0],
+        #         "minProperties": additional_props_min_cnt
+        #     })
+        # elif len(additional_props) > 1:
+        #     objschema.update({
+        #         "additionalProperties": {
+        #             "anyOf": additional_props
+        #         },
+        #         "minProperties": additional_props_min_cnt
+        #     })
+        # if len(additional_props) > 0 and additional_props_max_cnt is not None:
+        #     objschema.update({
+        #         "maxProperties": additional_props_max_cnt
+        #     })
         if len(anyofs) > 0:
             schemadef.update({
                 "anyOf": [
@@ -158,7 +166,7 @@ def process_cardinality(t, schemadef, prop_local_name):
         else:
             convert_to_array(t, schemadef, prop_local_name)
     else:
-            convert_to_array(t, schemadef, prop_local_name)
+        convert_to_array(t, schemadef, prop_local_name)
 
 def process_attributes(t, schemadef):
     if hasattr(t, "attributes") and t.attributes:
@@ -192,7 +200,8 @@ def convert_any_type(t, schemadef):
         and t.type.name == '{http://www.w3.org/2001/XMLSchema}anyType':
         print("..anyType")
         schemadef.update({
-             "type": "null"
+             "type": "boolean",
+             "default": False
          })
     elif isinstance(t, XsdElement) and hasattr(t, "type"):
         # handling for built-ins
@@ -210,7 +219,7 @@ def convert_any_type(t, schemadef):
         else:
             print(f"..reference {t.type.display_name}")
             schemadef.update({
-                "$ref": f"#/definitions/{t.type.display_name}"
+                "$ref": f'#/definitions/{t.type.display_name.replace(":", "_")}'
             })
     # processing for complex types
     elif isinstance(t, XsdComplexType):
@@ -242,7 +251,7 @@ def convert_simple_types(xsd, json_schema):
         schemadef = {
         }
         convert_any_type(t, schemadef)
-        json_schema.setdefault("definitions", {})[t.display_name] = schemadef
+        json_schema.setdefault("definitions", {})[t.display_name.replace(":", "_")] = schemadef
 
 def convert_complex_types(xsd, json_schema):
     # Iterate through the XSD complex types
@@ -250,7 +259,7 @@ def convert_complex_types(xsd, json_schema):
         print(t.display_name)
         schemadef = {}
         convert_any_type(t, schemadef)
-        json_schema.setdefault("definitions", {})[t.display_name] = schemadef
+        json_schema.setdefault("definitions", {})[t.display_name.replace(":", "_")] = schemadef
 
 def xsd_to_json_schema(xsd_file, json_schema=None):
     # Load the XSD file using xmlschema
@@ -289,32 +298,39 @@ if __name__ == "__main__":
     json_schema = xsd_to_json_schema(xsd_file, json_schema)
     xsd_file = "epp-schema-files/src/main/resources/xsd/rfc5732_host_mapping.xsd"
     json_schema = xsd_to_json_schema(xsd_file, json_schema)
-    json_schema.update({
-        "properties": {
-            "epp": {
-                "$ref": "#/definitions/epp:eppType"
-            }
-        },
-        "required": ["epp"],
-        "additionalProperties": False
-    })
     # json_schema.update({
     #     "properties": {
     #         "epp": {
-    #             "properties": {
-    #                 "create": {
-    #                     "$ref": "#/definitions/domain:createType"
-    #                 }
-    #             },
-    #             "required": ["create"]
+    #             "$ref": "#/definitions/epp:eppType"
     #         }
     #     },
     #     "required": ["epp"],
     #     "additionalProperties": False
     # })
-    print(json.dumps(json_schema))
+    json_schema.update(
+        {
+            "allOf": [
+                {
+                    "properties": {
+                        "command": {
+                            "properties": {
+                                "create": {
+                                    "$ref": "#/definitions/domain:createType"
+                                }
+                            },
+                            "required": ["create"]
+                        }
+                    },
+                    "required": ["command"]
+                },
+                {
+                    "$ref": "#/definitions/epp:eppType"
+                }
+            ]
+        })
     if not os.path.exists("output"):
         os.makedirs("output")
     with open("output/epp-schema.json", "w") as f:
         json.dump(json_schema, f, indent=2)
-    # print(json.dumps(json_schema, indent=2))
+    with open("output/epp-schema.yaml", "w") as f:
+        yaml.dump(json_schema, f)
