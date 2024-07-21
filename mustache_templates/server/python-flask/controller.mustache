@@ -90,6 +90,14 @@ def {{operationId}}({{#allParams}}{{^isHeaderParam}}{{^isBodyParam}}{{paramName}
                 {{/isFile}}
             {{/isPrimitiveType}}
         {{/isContainer}}
+        {{#isBodyParam}}
+            {{#isPrimitiveType}}
+    {{paramName}} = None
+    if connexion.request.is_json:
+        {{paramName}} = connexion.request.get_json()
+            {{/isPrimitiveType}}
+        {{/isBodyParam}}
+
         {{#isArray}}
             {{#items}}
                 {{#isDate}}
@@ -123,15 +131,6 @@ def {{operationId}}({{#allParams}}{{^isHeaderParam}}{{^isBodyParam}}{{paramName}
             {{/items}}
         {{/isMap}}
     {{/allParams}}
-
-
-    {{#allParams}}
-        {{#isBodyParam}}
-    {{paramName}} = None
-    if connexion.request.is_json:
-        {{paramName}} = connexion.request.get_json()
-        {{/isBodyParam}}
-    {{/allParams}}   
 
 
     try:
