@@ -23,8 +23,8 @@ with open(input_file_openapi, "r") as f:
 with open(input_file_schemas, "r") as f:
     epp_schema = json.load(f)
 
-openapi.setdefault("components", []).setdefault("schemas", [])
-openapi["components"]["schemas"].update(epp_schema["definitions"]) 
+openapi.setdefault("components", {}).setdefault("schemas", {})
+openapi["components"]["schemas"].update(epp_schema["definitions"])
 change_paths(openapi["components"]["schemas"])
 with open(output_file_openapi, "w") as f:
     yaml.dump(openapi, f, Dumper=Dumper)

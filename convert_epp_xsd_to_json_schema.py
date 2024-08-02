@@ -264,10 +264,19 @@ def convert_simple_types(xsd, json_schema):
 def convert_complex_types(xsd, json_schema):
     # Iterate through the XSD complex types
     for t in xsd.complex_types:
-        print(t.display_name)
+        print(f"Complex Type: {t.display_name}")
         schemadef = {}
         convert_any_type(t, schemadef)
         json_schema.setdefault("definitions", {})[t.display_name.replace(":", "_")] = schemadef
+
+def convert_root_elements(xsd, json_schema):
+    # Iterate through the XSD complex types
+    for el in xsd.root_elements:
+        print(f"Root element: {el.display_name}")
+        schemadef = {}
+        convert_any_type(el, schemadef)
+        json_schema.setdefault("definitions", {})[el.display_name.replace(":", "_")] = schemadef
+
 
 def xsd_to_json_schema(xsd_file, json_schema=None):
     # Load the XSD file using xmlschema
@@ -282,6 +291,7 @@ def xsd_to_json_schema(xsd_file, json_schema=None):
 
     convert_simple_types(xsd, json_schema)
     convert_complex_types(xsd, json_schema)
+    convert_root_elements(xsd, json_schema)
 
     try:
         validator = jsonschema.Draft202012Validator(json_schema)
@@ -299,10 +309,10 @@ def xsd_to_json_schema(xsd_file, json_schema=None):
 
 if __name__ == "__main__":
     xsd_files = [
-        "epp-schema-files/src/main/resources/xsd/rfc5730_shared_structure.xsd",
-        "epp-schema-files/src/main/resources/xsd/rfc5730_base.xsd",
-        "epp-schema-files/src/main/resources/xsd/rfc5731_domain_name_mapping.xsd",
-        "epp-schema-files/src/main/resources/xsd/rfc5732_host_mapping.xsd",
+        # "epp-schema-files/src/main/resources/xsd/rfc5730_shared_structure.xsd",
+        # "epp-schema-files/src/main/resources/xsd/rfc5730_base.xsd",
+        # "epp-schema-files/src/main/resources/xsd/rfc5731_domain_name_mapping.xsd",
+        # "epp-schema-files/src/main/resources/xsd/rfc5732_host_mapping.xsd",
         "epp-schema-files/src/main/resources/xsd/rfc5910_secdns.xsd"
     ]
 
@@ -312,7 +322,7 @@ if __name__ == "__main__":
     
     json_schema.update(
         {
-            "$ref": "#/definitions/epp:eppType"
+            "$ref": "#/definitions/secDNS_dsOrKeyType"
         })
     if not os.path.exists("output"):
         os.makedirs("output")
