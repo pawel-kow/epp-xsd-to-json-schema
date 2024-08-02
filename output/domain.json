@@ -1,0 +1,791 @@
+{
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "unevaluatedProperties": false,
+  "$defs": {
+    "domain_pLimitType": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 99
+    },
+    "domain_pUnitType": {
+      "type": "string",
+      "enum": [
+        "y",
+        "m"
+      ]
+    },
+    "domain_contactAttrType": {
+      "type": "string",
+      "enum": [
+        "admin",
+        "billing",
+        "tech"
+      ]
+    },
+    "domain_hostsType": {
+      "type": "string",
+      "enum": [
+        "all",
+        "del",
+        "none",
+        "sub"
+      ]
+    },
+    "domain_clIDChgType": {
+      "type": "string",
+      "minLength": 0,
+      "maxLength": 16
+    },
+    "domain_statusValueType": {
+      "type": "string",
+      "enum": [
+        "clientDeleteProhibited",
+        "clientHold",
+        "clientRenewProhibited",
+        "clientTransferProhibited",
+        "clientUpdateProhibited",
+        "inactive",
+        "ok",
+        "pendingCreate",
+        "pendingDelete",
+        "pendingRenew",
+        "pendingTransfer",
+        "pendingUpdate",
+        "serverDeleteProhibited",
+        "serverHold",
+        "serverRenewProhibited",
+        "serverTransferProhibited",
+        "serverUpdateProhibited"
+      ]
+    },
+    "domain_createType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "$ref": "shared.json#/$defs/eppcom_labelType"
+        },
+        "period": {
+          "$ref": "#/$defs/domain_periodType"
+        },
+        "ns": {
+          "$ref": "#/$defs/domain_nsType"
+        },
+        "registrant": {
+          "$ref": "shared.json#/$defs/eppcom_clIDType"
+        },
+        "contact": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/domain_contactType"
+          },
+          "minItems": 0
+        },
+        "authInfo": {
+          "$ref": "#/$defs/domain_authInfoType"
+        }
+      },
+      "required": [
+        "name",
+        "authInfo"
+      ]
+    },
+    "domain_periodType": {
+      "properties": {
+        "@unit": {
+          "type": "string",
+          "enum": [
+            "y",
+            "m"
+          ]
+        },
+        "#value": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 99
+        }
+      },
+      "type": "object"
+    },
+    "domain_nsType": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "hostObj": {
+              "type": "array",
+              "items": {
+                "$ref": "shared.json#/$defs/eppcom_labelType"
+              },
+              "minItems": 1
+            }
+          },
+          "required": [
+            "hostObj"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "hostAttr": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/domain_hostAttrType"
+              },
+              "minItems": 1
+            }
+          },
+          "required": [
+            "hostAttr"
+          ]
+        }
+      ]
+    },
+    "domain_hostAttrType": {
+      "type": "object",
+      "properties": {
+        "hostName": {
+          "$ref": "shared.json#/$defs/eppcom_labelType"
+        },
+        "hostAddr": {
+          "type": "array",
+          "items": {
+            "$ref": "host.json#/$defs/host_addrType"
+          },
+          "minItems": 0
+        }
+      },
+      "required": [
+        "hostName"
+      ]
+    },
+    "domain_contactType": {
+      "properties": {
+        "@type": {
+          "type": "string",
+          "enum": [
+            "admin",
+            "billing",
+            "tech"
+          ]
+        },
+        "#value": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 16
+        }
+      },
+      "type": "object"
+    },
+    "domain_authInfoType": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "pw": {
+              "$ref": "shared.json#/$defs/eppcom_pwAuthInfoType"
+            }
+          },
+          "required": [
+            "pw"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "ext": {
+              "$ref": "shared.json#/$defs/eppcom_extAuthInfoType"
+            }
+          },
+          "required": [
+            "ext"
+          ]
+        }
+      ]
+    },
+    "domain_sNameType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "$ref": "shared.json#/$defs/eppcom_labelType"
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
+    "domain_mNameType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "array",
+          "items": {
+            "$ref": "shared.json#/$defs/eppcom_labelType"
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
+    "domain_infoType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "$ref": "#/$defs/domain_infoNameType"
+        },
+        "authInfo": {
+          "$ref": "#/$defs/domain_authInfoType"
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
+    "domain_infoNameType": {
+      "properties": {
+        "@hosts": {
+          "type": "string",
+          "enum": [
+            "all",
+            "del",
+            "none",
+            "sub"
+          ]
+        },
+        "#value": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255
+        }
+      },
+      "type": "object"
+    },
+    "domain_renewType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "$ref": "shared.json#/$defs/eppcom_labelType"
+        },
+        "curExpDate": {
+          "type": "string",
+          "format": "date"
+        },
+        "period": {
+          "$ref": "#/$defs/domain_periodType"
+        }
+      },
+      "required": [
+        "name",
+        "curExpDate"
+      ]
+    },
+    "domain_transferType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "$ref": "shared.json#/$defs/eppcom_labelType"
+        },
+        "period": {
+          "$ref": "#/$defs/domain_periodType"
+        },
+        "authInfo": {
+          "$ref": "#/$defs/domain_authInfoType"
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
+    "domain_updateType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "$ref": "shared.json#/$defs/eppcom_labelType"
+        },
+        "add": {
+          "$ref": "#/$defs/domain_addRemType"
+        },
+        "rem": {
+          "$ref": "#/$defs/domain_addRemType"
+        },
+        "chg": {
+          "$ref": "#/$defs/domain_chgType"
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
+    "domain_addRemType": {
+      "type": "object",
+      "properties": {
+        "ns": {
+          "$ref": "#/$defs/domain_nsType"
+        },
+        "contact": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/domain_contactType"
+          },
+          "minItems": 0
+        },
+        "status": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/domain_statusType"
+          },
+          "maxItems": 11,
+          "minItems": 0
+        }
+      }
+    },
+    "domain_chgType": {
+      "type": "object",
+      "properties": {
+        "registrant": {
+          "$ref": "#/$defs/domain_clIDChgType"
+        },
+        "authInfo": {
+          "$ref": "#/$defs/domain_authInfoChgType"
+        }
+      }
+    },
+    "domain_authInfoChgType": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "pw": {
+              "$ref": "shared.json#/$defs/eppcom_pwAuthInfoType"
+            }
+          },
+          "required": [
+            "pw"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "ext": {
+              "$ref": "shared.json#/$defs/eppcom_extAuthInfoType"
+            }
+          },
+          "required": [
+            "ext"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "null": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          "required": [
+            "null"
+          ]
+        }
+      ]
+    },
+    "domain_chkDataType": {
+      "type": "object",
+      "properties": {
+        "cd": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/domain_checkType"
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "cd"
+      ]
+    },
+    "domain_checkType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "$ref": "#/$defs/domain_checkNameType"
+        },
+        "reason": {
+          "$ref": "shared.json#/$defs/eppcom_reasonType"
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
+    "domain_checkNameType": {
+      "properties": {
+        "@avail": {
+          "type": "boolean"
+        },
+        "#value": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255
+        }
+      },
+      "type": "object"
+    },
+    "domain_creDataType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "$ref": "shared.json#/$defs/eppcom_labelType"
+        },
+        "crDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "exDate": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "name",
+        "crDate"
+      ]
+    },
+    "domain_infDataType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "$ref": "shared.json#/$defs/eppcom_labelType"
+        },
+        "roid": {
+          "$ref": "shared.json#/$defs/eppcom_roidType"
+        },
+        "status": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/domain_statusType"
+          },
+          "maxItems": 11,
+          "minItems": 0
+        },
+        "registrant": {
+          "$ref": "shared.json#/$defs/eppcom_clIDType"
+        },
+        "contact": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/domain_contactType"
+          },
+          "minItems": 0
+        },
+        "ns": {
+          "$ref": "#/$defs/domain_nsType"
+        },
+        "host": {
+          "type": "array",
+          "items": {
+            "$ref": "shared.json#/$defs/eppcom_labelType"
+          },
+          "minItems": 0
+        },
+        "clID": {
+          "$ref": "shared.json#/$defs/eppcom_clIDType"
+        },
+        "crID": {
+          "$ref": "shared.json#/$defs/eppcom_clIDType"
+        },
+        "crDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "upID": {
+          "$ref": "shared.json#/$defs/eppcom_clIDType"
+        },
+        "upDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "exDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "trDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "authInfo": {
+          "$ref": "#/$defs/domain_authInfoType"
+        }
+      },
+      "required": [
+        "name",
+        "roid",
+        "clID"
+      ]
+    },
+    "domain_statusType": {
+      "properties": {
+        "@s": {
+          "type": "string",
+          "enum": [
+            "clientDeleteProhibited",
+            "clientHold",
+            "clientRenewProhibited",
+            "clientTransferProhibited",
+            "clientUpdateProhibited",
+            "inactive",
+            "ok",
+            "pendingCreate",
+            "pendingDelete",
+            "pendingRenew",
+            "pendingTransfer",
+            "pendingUpdate",
+            "serverDeleteProhibited",
+            "serverHold",
+            "serverRenewProhibited",
+            "serverTransferProhibited",
+            "serverUpdateProhibited"
+          ]
+        },
+        "#value": {
+          "type": "string"
+        },
+        "@lang": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "domain_panDataType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "$ref": "#/$defs/domain_paNameType"
+        },
+        "paTRID": {
+          "$ref": "base.json#/$defs/epp_trIDType"
+        },
+        "paDate": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "name",
+        "paTRID",
+        "paDate"
+      ]
+    },
+    "domain_paNameType": {
+      "properties": {
+        "@paResult": {
+          "type": "boolean"
+        },
+        "#value": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255
+        }
+      },
+      "type": "object"
+    },
+    "domain_renDataType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "$ref": "shared.json#/$defs/eppcom_labelType"
+        },
+        "exDate": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
+    "domain_trnDataType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "$ref": "shared.json#/$defs/eppcom_labelType"
+        },
+        "trStatus": {
+          "$ref": "shared.json#/$defs/eppcom_trStatusType"
+        },
+        "reID": {
+          "$ref": "shared.json#/$defs/eppcom_clIDType"
+        },
+        "reDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "acID": {
+          "$ref": "shared.json#/$defs/eppcom_clIDType"
+        },
+        "acDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "exDate": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "name",
+        "trStatus",
+        "reID",
+        "reDate",
+        "acID",
+        "acDate"
+      ]
+    }
+  },
+  "anyOf": [
+    {
+      "type": "object",
+      "properties": {
+        "domain_check": {
+          "$ref": "#/$defs/domain_mNameType"
+        }
+      },
+      "required": [
+        "domain_check"
+      ]
+    },
+    {
+      "type": "object",
+      "properties": {
+        "domain_create": {
+          "$ref": "#/$defs/domain_createType"
+        }
+      },
+      "required": [
+        "domain_create"
+      ]
+    },
+    {
+      "type": "object",
+      "properties": {
+        "domain_delete": {
+          "$ref": "#/$defs/domain_sNameType"
+        }
+      },
+      "required": [
+        "domain_delete"
+      ]
+    },
+    {
+      "type": "object",
+      "properties": {
+        "domain_info": {
+          "$ref": "#/$defs/domain_infoType"
+        }
+      },
+      "required": [
+        "domain_info"
+      ]
+    },
+    {
+      "type": "object",
+      "properties": {
+        "domain_renew": {
+          "$ref": "#/$defs/domain_renewType"
+        }
+      },
+      "required": [
+        "domain_renew"
+      ]
+    },
+    {
+      "type": "object",
+      "properties": {
+        "domain_transfer": {
+          "$ref": "#/$defs/domain_transferType"
+        }
+      },
+      "required": [
+        "domain_transfer"
+      ]
+    },
+    {
+      "type": "object",
+      "properties": {
+        "domain_update": {
+          "$ref": "#/$defs/domain_updateType"
+        }
+      },
+      "required": [
+        "domain_update"
+      ]
+    },
+    {
+      "type": "object",
+      "properties": {
+        "domain_chkData": {
+          "$ref": "#/$defs/domain_chkDataType"
+        }
+      },
+      "required": [
+        "domain_chkData"
+      ]
+    },
+    {
+      "type": "object",
+      "properties": {
+        "domain_creData": {
+          "$ref": "#/$defs/domain_creDataType"
+        }
+      },
+      "required": [
+        "domain_creData"
+      ]
+    },
+    {
+      "type": "object",
+      "properties": {
+        "domain_infData": {
+          "$ref": "#/$defs/domain_infDataType"
+        }
+      },
+      "required": [
+        "domain_infData"
+      ]
+    },
+    {
+      "type": "object",
+      "properties": {
+        "domain_panData": {
+          "$ref": "#/$defs/domain_panDataType"
+        }
+      },
+      "required": [
+        "domain_panData"
+      ]
+    },
+    {
+      "type": "object",
+      "properties": {
+        "domain_renData": {
+          "$ref": "#/$defs/domain_renDataType"
+        }
+      },
+      "required": [
+        "domain_renData"
+      ]
+    },
+    {
+      "type": "object",
+      "properties": {
+        "domain_trnData": {
+          "$ref": "#/$defs/domain_trnDataType"
+        }
+      },
+      "required": [
+        "domain_trnData"
+      ]
+    }
+  ]
+}

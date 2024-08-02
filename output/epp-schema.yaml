@@ -1,0 +1,1951 @@
+$defs:
+  contact_addRemType:
+    properties:
+      status:
+        items:
+          $ref: '#/$defs/contact_statusType'
+        maxItems: 7
+        minItems: 1
+        type: array
+    required:
+    - status
+    type: object
+  contact_addrType:
+    properties:
+      cc:
+        $ref: '#/$defs/contact_ccType'
+      city:
+        $ref: '#/$defs/contact_postalLineType'
+      pc:
+        $ref: '#/$defs/contact_pcType'
+      sp:
+        $ref: '#/$defs/contact_optPostalLineType'
+      street:
+        items:
+          $ref: '#/$defs/contact_optPostalLineType'
+        maxItems: 3
+        minItems: 0
+        type: array
+    required:
+    - city
+    - cc
+    type: object
+  contact_authIDType:
+    properties:
+      authInfo:
+        $ref: '#/$defs/contact_authInfoType'
+      id:
+        $ref: '#/$defs/eppcom_clIDType'
+    required:
+    - id
+    type: object
+  contact_authInfoType:
+    oneOf:
+    - properties:
+        pw:
+          $ref: '#/$defs/eppcom_pwAuthInfoType'
+      required:
+      - pw
+      type: object
+    - properties:
+        ext:
+          $ref: '#/$defs/eppcom_extAuthInfoType'
+      required:
+      - ext
+      type: object
+  contact_ccType:
+    maxLength: 2
+    minLength: 2
+    type: string
+  contact_checkIDType:
+    properties:
+      '#value':
+        maxLength: 16
+        minLength: 3
+        type: string
+      '@avail':
+        type: boolean
+    type: object
+  contact_checkType:
+    properties:
+      id:
+        $ref: '#/$defs/contact_checkIDType'
+      reason:
+        $ref: '#/$defs/eppcom_reasonType'
+    required:
+    - id
+    type: object
+  contact_chgPostalInfoType:
+    properties:
+      '@type':
+        enum: &id001
+        - loc
+        - int
+        type: string
+      addr:
+        $ref: '#/$defs/contact_addrType'
+      name:
+        $ref: '#/$defs/contact_postalLineType'
+      org:
+        $ref: '#/$defs/contact_optPostalLineType'
+    type: object
+  contact_chgType:
+    properties:
+      authInfo:
+        $ref: '#/$defs/contact_authInfoType'
+      disclose:
+        $ref: '#/$defs/contact_discloseType'
+      email:
+        $ref: '#/$defs/eppcom_minTokenType'
+      fax:
+        $ref: '#/$defs/contact_e164Type'
+      postalInfo:
+        items:
+          $ref: '#/$defs/contact_chgPostalInfoType'
+        maxItems: 2
+        minItems: 0
+        type: array
+      voice:
+        $ref: '#/$defs/contact_e164Type'
+    type: object
+  contact_chkDataType:
+    properties:
+      cd:
+        items:
+          $ref: '#/$defs/contact_checkType'
+        minItems: 1
+        type: array
+    required:
+    - cd
+    type: object
+  contact_creDataType:
+    properties:
+      crDate:
+        format: date-time
+        type: string
+      id:
+        $ref: '#/$defs/eppcom_clIDType'
+    required:
+    - id
+    - crDate
+    type: object
+  contact_createType:
+    properties:
+      authInfo:
+        $ref: '#/$defs/contact_authInfoType'
+      disclose:
+        $ref: '#/$defs/contact_discloseType'
+      email:
+        $ref: '#/$defs/eppcom_minTokenType'
+      fax:
+        $ref: '#/$defs/contact_e164Type'
+      id:
+        $ref: '#/$defs/eppcom_clIDType'
+      postalInfo:
+        items:
+          $ref: '#/$defs/contact_postalInfoType'
+        maxItems: 2
+        minItems: 1
+        type: array
+      voice:
+        $ref: '#/$defs/contact_e164Type'
+    required:
+    - id
+    - postalInfo
+    - email
+    - authInfo
+    type: object
+  contact_discloseType:
+    properties:
+      '@flag':
+        type: boolean
+      addr:
+        items:
+          $ref: '#/$defs/contact_intLocType'
+        maxItems: 2
+        minItems: 0
+        type: array
+      email:
+        default: false
+        type: boolean
+      fax:
+        default: false
+        type: boolean
+      name:
+        items:
+          $ref: '#/$defs/contact_intLocType'
+        maxItems: 2
+        minItems: 0
+        type: array
+      org:
+        items:
+          $ref: '#/$defs/contact_intLocType'
+        maxItems: 2
+        minItems: 0
+        type: array
+      voice:
+        default: false
+        type: boolean
+    type: object
+  contact_e164StringType:
+    maxLength: 17
+    type: string
+  contact_e164Type:
+    properties:
+      '#value':
+        maxLength: 17
+        type: string
+      '@x':
+        type: string
+    type: object
+  contact_infDataType:
+    properties:
+      authInfo:
+        $ref: '#/$defs/contact_authInfoType'
+      clID:
+        $ref: '#/$defs/eppcom_clIDType'
+      crDate:
+        format: date-time
+        type: string
+      crID:
+        $ref: '#/$defs/eppcom_clIDType'
+      disclose:
+        $ref: '#/$defs/contact_discloseType'
+      email:
+        $ref: '#/$defs/eppcom_minTokenType'
+      fax:
+        $ref: '#/$defs/contact_e164Type'
+      id:
+        $ref: '#/$defs/eppcom_clIDType'
+      postalInfo:
+        items:
+          $ref: '#/$defs/contact_postalInfoType'
+        maxItems: 2
+        minItems: 1
+        type: array
+      roid:
+        $ref: '#/$defs/eppcom_roidType'
+      status:
+        items:
+          $ref: '#/$defs/contact_statusType'
+        maxItems: 7
+        minItems: 1
+        type: array
+      trDate:
+        format: date-time
+        type: string
+      upDate:
+        format: date-time
+        type: string
+      upID:
+        $ref: '#/$defs/eppcom_clIDType'
+      voice:
+        $ref: '#/$defs/contact_e164Type'
+    required:
+    - id
+    - roid
+    - status
+    - postalInfo
+    - email
+    - clID
+    - crID
+    - crDate
+    type: object
+  contact_intLocType:
+    properties:
+      '@type':
+        enum: *id001
+        type: string
+    type: object
+  contact_mIDType:
+    properties:
+      id:
+        items:
+          $ref: '#/$defs/eppcom_clIDType'
+        minItems: 1
+        type: array
+    required:
+    - id
+    type: object
+  contact_optPostalLineType:
+    maxLength: 255
+    type: string
+  contact_paCLIDType:
+    properties:
+      '#value':
+        maxLength: 16
+        minLength: 3
+        type: string
+      '@paResult':
+        type: boolean
+    type: object
+  contact_panDataType:
+    properties:
+      id:
+        $ref: '#/$defs/contact_paCLIDType'
+      paDate:
+        format: date-time
+        type: string
+      paTRID:
+        $ref: '#/$defs/epp_trIDType'
+    required:
+    - id
+    - paTRID
+    - paDate
+    type: object
+  contact_pcType:
+    maxLength: 16
+    type: string
+  contact_postalInfoEnumType:
+    enum: *id001
+    type: string
+  contact_postalInfoType:
+    properties:
+      '@type':
+        enum: *id001
+        type: string
+      addr:
+        $ref: '#/$defs/contact_addrType'
+      name:
+        $ref: '#/$defs/contact_postalLineType'
+      org:
+        $ref: '#/$defs/contact_optPostalLineType'
+    required:
+    - name
+    - addr
+    type: object
+  contact_postalLineType:
+    maxLength: 255
+    minLength: 1
+    type: string
+  contact_sIDType:
+    properties:
+      id:
+        $ref: '#/$defs/eppcom_clIDType'
+    required:
+    - id
+    type: object
+  contact_statusType:
+    properties:
+      '#value':
+        type: string
+      '@lang':
+        type: string
+      '@s':
+        enum: &id002
+        - clientDeleteProhibited
+        - clientTransferProhibited
+        - clientUpdateProhibited
+        - linked
+        - ok
+        - pendingCreate
+        - pendingDelete
+        - pendingTransfer
+        - pendingUpdate
+        - serverDeleteProhibited
+        - serverTransferProhibited
+        - serverUpdateProhibited
+        type: string
+    type: object
+  contact_statusValueType:
+    enum: *id002
+    type: string
+  contact_trnDataType:
+    properties:
+      acDate:
+        format: date-time
+        type: string
+      acID:
+        $ref: '#/$defs/eppcom_clIDType'
+      id:
+        $ref: '#/$defs/eppcom_clIDType'
+      reDate:
+        format: date-time
+        type: string
+      reID:
+        $ref: '#/$defs/eppcom_clIDType'
+      trStatus:
+        $ref: '#/$defs/eppcom_trStatusType'
+    required:
+    - id
+    - trStatus
+    - reID
+    - reDate
+    - acID
+    - acDate
+    type: object
+  contact_updateType:
+    properties:
+      add:
+        $ref: '#/$defs/contact_addRemType'
+      chg:
+        $ref: '#/$defs/contact_chgType'
+      id:
+        $ref: '#/$defs/eppcom_clIDType'
+      rem:
+        $ref: '#/$defs/contact_addRemType'
+    required:
+    - id
+    type: object
+  domain_addRemType:
+    properties:
+      contact:
+        items:
+          $ref: '#/$defs/domain_contactType'
+        minItems: 0
+        type: array
+      ns:
+        $ref: '#/$defs/domain_nsType'
+      status:
+        items:
+          $ref: '#/$defs/domain_statusType'
+        maxItems: 11
+        minItems: 0
+        type: array
+    type: object
+  domain_authInfoChgType:
+    oneOf:
+    - properties:
+        pw:
+          $ref: '#/$defs/eppcom_pwAuthInfoType'
+      required:
+      - pw
+      type: object
+    - properties:
+        ext:
+          $ref: '#/$defs/eppcom_extAuthInfoType'
+      required:
+      - ext
+      type: object
+    - properties:
+        'null':
+          default: false
+          type: boolean
+      required:
+      - 'null'
+      type: object
+  domain_authInfoType:
+    oneOf:
+    - properties:
+        pw:
+          $ref: '#/$defs/eppcom_pwAuthInfoType'
+      required:
+      - pw
+      type: object
+    - properties:
+        ext:
+          $ref: '#/$defs/eppcom_extAuthInfoType'
+      required:
+      - ext
+      type: object
+  domain_checkNameType:
+    properties:
+      '#value':
+        maxLength: 255
+        minLength: 1
+        type: string
+      '@avail':
+        type: boolean
+    type: object
+  domain_checkType:
+    properties:
+      name:
+        $ref: '#/$defs/domain_checkNameType'
+      reason:
+        $ref: '#/$defs/eppcom_reasonType'
+    required:
+    - name
+    type: object
+  domain_chgType:
+    properties:
+      authInfo:
+        $ref: '#/$defs/domain_authInfoChgType'
+      registrant:
+        $ref: '#/$defs/domain_clIDChgType'
+    type: object
+  domain_chkDataType:
+    properties:
+      cd:
+        items:
+          $ref: '#/$defs/domain_checkType'
+        minItems: 1
+        type: array
+    required:
+    - cd
+    type: object
+  domain_clIDChgType:
+    maxLength: 16
+    minLength: 0
+    type: string
+  domain_contactAttrType:
+    enum: &id003
+    - admin
+    - billing
+    - tech
+    type: string
+  domain_contactType:
+    properties:
+      '#value':
+        maxLength: 16
+        minLength: 3
+        type: string
+      '@type':
+        enum: *id003
+        type: string
+    type: object
+  domain_creDataType:
+    properties:
+      crDate:
+        format: date-time
+        type: string
+      exDate:
+        format: date-time
+        type: string
+      name:
+        $ref: '#/$defs/eppcom_labelType'
+    required:
+    - name
+    - crDate
+    type: object
+  domain_createType:
+    properties:
+      authInfo:
+        $ref: '#/$defs/domain_authInfoType'
+      contact:
+        items:
+          $ref: '#/$defs/domain_contactType'
+        minItems: 0
+        type: array
+      name:
+        $ref: '#/$defs/eppcom_labelType'
+      ns:
+        $ref: '#/$defs/domain_nsType'
+      period:
+        $ref: '#/$defs/domain_periodType'
+      registrant:
+        $ref: '#/$defs/eppcom_clIDType'
+    required:
+    - name
+    - authInfo
+    type: object
+  domain_hostAttrType:
+    properties:
+      hostAddr:
+        items:
+          $ref: '#/$defs/host_addrType'
+        minItems: 0
+        type: array
+      hostName:
+        $ref: '#/$defs/eppcom_labelType'
+    required:
+    - hostName
+    type: object
+  domain_hostsType:
+    enum: &id004
+    - all
+    - del
+    - none
+    - sub
+    type: string
+  domain_infDataType:
+    properties:
+      authInfo:
+        $ref: '#/$defs/domain_authInfoType'
+      clID:
+        $ref: '#/$defs/eppcom_clIDType'
+      contact:
+        items:
+          $ref: '#/$defs/domain_contactType'
+        minItems: 0
+        type: array
+      crDate:
+        format: date-time
+        type: string
+      crID:
+        $ref: '#/$defs/eppcom_clIDType'
+      exDate:
+        format: date-time
+        type: string
+      host:
+        items:
+          $ref: '#/$defs/eppcom_labelType'
+        minItems: 0
+        type: array
+      name:
+        $ref: '#/$defs/eppcom_labelType'
+      ns:
+        $ref: '#/$defs/domain_nsType'
+      registrant:
+        $ref: '#/$defs/eppcom_clIDType'
+      roid:
+        $ref: '#/$defs/eppcom_roidType'
+      status:
+        items:
+          $ref: '#/$defs/domain_statusType'
+        maxItems: 11
+        minItems: 0
+        type: array
+      trDate:
+        format: date-time
+        type: string
+      upDate:
+        format: date-time
+        type: string
+      upID:
+        $ref: '#/$defs/eppcom_clIDType'
+    required:
+    - name
+    - roid
+    - clID
+    type: object
+  domain_infoNameType:
+    properties:
+      '#value':
+        maxLength: 255
+        minLength: 1
+        type: string
+      '@hosts':
+        enum: *id004
+        type: string
+    type: object
+  domain_infoType:
+    properties:
+      authInfo:
+        $ref: '#/$defs/domain_authInfoType'
+      name:
+        $ref: '#/$defs/domain_infoNameType'
+    required:
+    - name
+    type: object
+  domain_mNameType:
+    properties:
+      name:
+        items:
+          $ref: '#/$defs/eppcom_labelType'
+        minItems: 1
+        type: array
+    required:
+    - name
+    type: object
+  domain_nsType:
+    oneOf:
+    - properties:
+        hostObj:
+          items:
+            $ref: '#/$defs/eppcom_labelType'
+          minItems: 1
+          type: array
+      required:
+      - hostObj
+      type: object
+    - properties:
+        hostAttr:
+          items:
+            $ref: '#/$defs/domain_hostAttrType'
+          minItems: 1
+          type: array
+      required:
+      - hostAttr
+      type: object
+  domain_pLimitType:
+    maximum: 99
+    minimum: 1
+    type: integer
+  domain_pUnitType:
+    enum: &id005
+    - y
+    - m
+    type: string
+  domain_paNameType:
+    properties:
+      '#value':
+        maxLength: 255
+        minLength: 1
+        type: string
+      '@paResult':
+        type: boolean
+    type: object
+  domain_panDataType:
+    properties:
+      name:
+        $ref: '#/$defs/domain_paNameType'
+      paDate:
+        format: date-time
+        type: string
+      paTRID:
+        $ref: '#/$defs/epp_trIDType'
+    required:
+    - name
+    - paTRID
+    - paDate
+    type: object
+  domain_periodType:
+    properties:
+      '#value':
+        maximum: 99
+        minimum: 1
+        type: integer
+      '@unit':
+        enum: *id005
+        type: string
+    type: object
+  domain_renDataType:
+    properties:
+      exDate:
+        format: date-time
+        type: string
+      name:
+        $ref: '#/$defs/eppcom_labelType'
+    required:
+    - name
+    type: object
+  domain_renewType:
+    properties:
+      curExpDate:
+        format: date
+        type: string
+      name:
+        $ref: '#/$defs/eppcom_labelType'
+      period:
+        $ref: '#/$defs/domain_periodType'
+    required:
+    - name
+    - curExpDate
+    type: object
+  domain_sNameType:
+    properties:
+      name:
+        $ref: '#/$defs/eppcom_labelType'
+    required:
+    - name
+    type: object
+  domain_statusType:
+    properties:
+      '#value':
+        type: string
+      '@lang':
+        type: string
+      '@s':
+        enum: &id006
+        - clientDeleteProhibited
+        - clientHold
+        - clientRenewProhibited
+        - clientTransferProhibited
+        - clientUpdateProhibited
+        - inactive
+        - ok
+        - pendingCreate
+        - pendingDelete
+        - pendingRenew
+        - pendingTransfer
+        - pendingUpdate
+        - serverDeleteProhibited
+        - serverHold
+        - serverRenewProhibited
+        - serverTransferProhibited
+        - serverUpdateProhibited
+        type: string
+    type: object
+  domain_statusValueType:
+    enum: *id006
+    type: string
+  domain_transferType:
+    properties:
+      authInfo:
+        $ref: '#/$defs/domain_authInfoType'
+      name:
+        $ref: '#/$defs/eppcom_labelType'
+      period:
+        $ref: '#/$defs/domain_periodType'
+    required:
+    - name
+    type: object
+  domain_trnDataType:
+    properties:
+      acDate:
+        format: date-time
+        type: string
+      acID:
+        $ref: '#/$defs/eppcom_clIDType'
+      exDate:
+        format: date-time
+        type: string
+      name:
+        $ref: '#/$defs/eppcom_labelType'
+      reDate:
+        format: date-time
+        type: string
+      reID:
+        $ref: '#/$defs/eppcom_clIDType'
+      trStatus:
+        $ref: '#/$defs/eppcom_trStatusType'
+    required:
+    - name
+    - trStatus
+    - reID
+    - reDate
+    - acID
+    - acDate
+    type: object
+  domain_updateType:
+    properties:
+      add:
+        $ref: '#/$defs/domain_addRemType'
+      chg:
+        $ref: '#/$defs/domain_chgType'
+      name:
+        $ref: '#/$defs/eppcom_labelType'
+      rem:
+        $ref: '#/$defs/domain_addRemType'
+    required:
+    - name
+    type: object
+  epp_commandType:
+    allOf:
+    - properties: &id007
+        clTRID:
+          $ref: '#/$defs/epp_trIDStringType'
+        extension:
+          $ref: '#/$defs/epp_extAnyType'
+      type: object
+    - oneOf:
+      - properties:
+          check:
+            $ref: '#/$defs/epp_readWriteType'
+        required:
+        - check
+        type: object
+      - properties:
+          create:
+            $ref: '#/$defs/epp_readWriteType'
+        required:
+        - create
+        type: object
+      - properties:
+          delete:
+            $ref: '#/$defs/epp_readWriteType'
+        required:
+        - delete
+        type: object
+      - properties:
+          info:
+            $ref: '#/$defs/epp_readWriteType'
+        required:
+        - info
+        type: object
+      - properties:
+          login:
+            $ref: '#/$defs/epp_loginType'
+        required:
+        - login
+        type: object
+      - properties:
+          logout:
+            default: false
+            type: boolean
+        required:
+        - logout
+        type: object
+      - properties:
+          poll:
+            $ref: '#/$defs/epp_pollType'
+        required:
+        - poll
+        type: object
+      - properties:
+          renew:
+            $ref: '#/$defs/epp_readWriteType'
+        required:
+        - renew
+        type: object
+      - properties:
+          transfer:
+            $ref: '#/$defs/epp_transferType'
+        required:
+        - transfer
+        type: object
+      - properties:
+          update:
+            $ref: '#/$defs/epp_readWriteType'
+        required:
+        - update
+        type: object
+    properties: *id007
+    type: object
+  epp_credsOptionsType:
+    properties:
+      lang:
+        type: string
+      version:
+        $ref: '#/$defs/epp_versionType'
+    required:
+    - version
+    - lang
+    type: object
+  epp_dcpAccessType:
+    oneOf:
+    - properties:
+        all:
+          default: false
+          type: boolean
+      required:
+      - all
+      type: object
+    - properties:
+        none:
+          default: false
+          type: boolean
+      required:
+      - none
+      type: object
+    - properties:
+        'null':
+          default: false
+          type: boolean
+      required:
+      - 'null'
+      type: object
+    - properties:
+        other:
+          default: false
+          type: boolean
+      required:
+      - other
+      type: object
+    - properties:
+        personal:
+          default: false
+          type: boolean
+      required:
+      - personal
+      type: object
+    - properties:
+        personalAndOther:
+          default: false
+          type: boolean
+      required:
+      - personalAndOther
+      type: object
+  epp_dcpExpiryType:
+    oneOf:
+    - properties:
+        absolute:
+          format: date-time
+          type: string
+      required:
+      - absolute
+      type: object
+    - properties:
+        relative:
+          format: duration
+          type: string
+      required:
+      - relative
+      type: object
+  epp_dcpOursType:
+    properties:
+      recDesc:
+        $ref: '#/$defs/epp_dcpRecDescType'
+    type: object
+  epp_dcpPurposeType:
+    properties:
+      admin:
+        default: false
+        type: boolean
+      contact:
+        default: false
+        type: boolean
+      other:
+        default: false
+        type: boolean
+      prov:
+        default: false
+        type: boolean
+    type: object
+  epp_dcpRecDescType:
+    maxLength: 255
+    minLength: 1
+    type: string
+  epp_dcpRecipientType:
+    properties:
+      other:
+        default: false
+        type: boolean
+      ours:
+        items:
+          $ref: '#/$defs/epp_dcpOursType'
+        minItems: 0
+        type: array
+      public:
+        default: false
+        type: boolean
+      same:
+        default: false
+        type: boolean
+      unrelated:
+        default: false
+        type: boolean
+    type: object
+  epp_dcpRetentionType:
+    oneOf:
+    - properties:
+        business:
+          default: false
+          type: boolean
+      required:
+      - business
+      type: object
+    - properties:
+        indefinite:
+          default: false
+          type: boolean
+      required:
+      - indefinite
+      type: object
+    - properties:
+        legal:
+          default: false
+          type: boolean
+      required:
+      - legal
+      type: object
+    - properties:
+        none:
+          default: false
+          type: boolean
+      required:
+      - none
+      type: object
+    - properties:
+        stated:
+          default: false
+          type: boolean
+      required:
+      - stated
+      type: object
+  epp_dcpStatementType:
+    properties:
+      purpose:
+        $ref: '#/$defs/epp_dcpPurposeType'
+      recipient:
+        $ref: '#/$defs/epp_dcpRecipientType'
+      retention:
+        $ref: '#/$defs/epp_dcpRetentionType'
+    required:
+    - purpose
+    - recipient
+    - retention
+    type: object
+  epp_dcpType:
+    properties:
+      access:
+        $ref: '#/$defs/epp_dcpAccessType'
+      expiry:
+        $ref: '#/$defs/epp_dcpExpiryType'
+      statement:
+        items:
+          $ref: '#/$defs/epp_dcpStatementType'
+        minItems: 1
+        type: array
+    required:
+    - access
+    - statement
+    type: object
+  epp_eppType:
+    oneOf:
+    - properties:
+        greeting:
+          $ref: '#/$defs/epp_greetingType'
+      required:
+      - greeting
+      type: object
+    - properties:
+        hello:
+          default: false
+          type: boolean
+      required:
+      - hello
+      type: object
+    - properties:
+        command:
+          $ref: '#/$defs/epp_commandType'
+      required:
+      - command
+      type: object
+    - properties:
+        response:
+          $ref: '#/$defs/epp_responseType'
+      required:
+      - response
+      type: object
+    - properties:
+        extension:
+          $ref: '#/$defs/epp_extAnyType'
+      required:
+      - extension
+      type: object
+  epp_errValueType:
+    allOf:
+    - properties: &id008
+        '#text':
+          items:
+            type: string
+          type: array
+      type: object
+    - type: object
+    properties: *id008
+    type: object
+  epp_extAnyType:
+    oneOf:
+    - properties:
+        domain_chkData:
+          $ref: '#/$defs/domain_chkDataType'
+      required:
+      - domain_chkData
+      type: object
+    - properties:
+        domain_creData:
+          $ref: '#/$defs/domain_creDataType'
+      required:
+      - domain_creData
+      type: object
+    - properties:
+        domain_infData:
+          $ref: '#/$defs/domain_infDataType'
+      required:
+      - domain_infData
+      type: object
+    - properties:
+        domain_panData:
+          $ref: '#/$defs/domain_panDataType'
+      required:
+      - domain_panData
+      type: object
+    - properties:
+        domain_renData:
+          $ref: '#/$defs/domain_renDataType'
+      required:
+      - domain_renData
+      type: object
+    - properties:
+        domain_trnData:
+          $ref: '#/$defs/domain_trnDataType'
+      required:
+      - domain_trnData
+      type: object
+    - properties:
+        host_chkData:
+          $ref: '#/$defs/host_chkDataType'
+      required:
+      - host_chkData
+      type: object
+    - properties:
+        host_creData:
+          $ref: '#/$defs/host_creDataType'
+      required:
+      - host_creData
+      type: object
+    - properties:
+        host_infData:
+          $ref: '#/$defs/host_infDataType'
+      required:
+      - host_infData
+      type: object
+    - properties:
+        host_panData:
+          $ref: '#/$defs/host_panDataType'
+      required:
+      - host_panData
+      type: object
+    - properties:
+        contact_chkData:
+          $ref: '#/$defs/contact_chkDataType'
+      required:
+      - contact_chkData
+      type: object
+    - properties:
+        contact_creData:
+          $ref: '#/$defs/contact_creDataType'
+      required:
+      - contact_creData
+      type: object
+    - properties:
+        contact_infData:
+          $ref: '#/$defs/contact_infDataType'
+      required:
+      - contact_infData
+      type: object
+    - properties:
+        contact_panData:
+          $ref: '#/$defs/contact_panDataType'
+      required:
+      - contact_panData
+      type: object
+    - properties:
+        contact_trnData:
+          $ref: '#/$defs/contact_trnDataType'
+      required:
+      - contact_trnData
+      type: object
+    - properties:
+        secDNS_infData:
+          $ref: '#/$defs/secDNS_dsOrKeyType'
+      required:
+      - secDNS_infData
+      type: object
+  epp_extErrValueType:
+    properties:
+      reason:
+        $ref: '#/$defs/epp_msgType'
+      value:
+        $ref: '#/$defs/epp_errValueType'
+    required:
+    - value
+    - reason
+    type: object
+  epp_extURIType:
+    properties:
+      extURI:
+        items:
+          format: uri
+          type: string
+        minItems: 1
+        type: array
+    required:
+    - extURI
+    type: object
+  epp_greetingType:
+    properties:
+      dcp:
+        $ref: '#/$defs/epp_dcpType'
+      svDate:
+        format: date-time
+        type: string
+      svID:
+        $ref: '#/$defs/epp_sIDType'
+      svcMenu:
+        $ref: '#/$defs/epp_svcMenuType'
+    required:
+    - svID
+    - svDate
+    - svcMenu
+    - dcp
+    type: object
+  epp_loginSvcType:
+    properties:
+      objURI:
+        items:
+          format: uri
+          type: string
+        minItems: 1
+        type: array
+      svcExtension:
+        $ref: '#/$defs/epp_extURIType'
+    required:
+    - objURI
+    type: object
+  epp_loginType:
+    properties:
+      clID:
+        $ref: '#/$defs/eppcom_clIDType'
+      newPW:
+        $ref: '#/$defs/epp_pwType'
+      options:
+        $ref: '#/$defs/epp_credsOptionsType'
+      pw:
+        $ref: '#/$defs/epp_pwType'
+      svcs:
+        $ref: '#/$defs/epp_loginSvcType'
+    required:
+    - clID
+    - pw
+    - options
+    - svcs
+    type: object
+  epp_mixedMsgType:
+    allOf:
+    - properties: &id009
+        '#text':
+          items:
+            type: string
+          type: array
+        '@lang':
+          type: string
+      type: object
+    - type: object
+    properties: *id009
+    type: object
+  epp_msgQType:
+    properties:
+      '@count':
+        type: integer
+      '@id':
+        minLength: 1
+        type: string
+      msg:
+        $ref: '#/$defs/epp_mixedMsgType'
+      qDate:
+        format: date-time
+        type: string
+    type: object
+  epp_msgType:
+    properties:
+      '#value':
+        type: string
+      '@lang':
+        type: string
+    type: object
+  epp_pollOpType:
+    enum: &id010
+    - ack
+    - req
+    type: string
+  epp_pollType:
+    properties:
+      '@msgID':
+        type: string
+      '@op':
+        enum: *id010
+        type: string
+    type: object
+  epp_pwType:
+    maxLength: 16
+    minLength: 6
+    type: string
+  epp_readWriteType:
+    oneOf:
+    - properties:
+        domain_check:
+          $ref: '#/$defs/domain_mNameType'
+      required:
+      - domain_check
+      type: object
+    - properties:
+        domain_create:
+          $ref: '#/$defs/domain_createType'
+      required:
+      - domain_create
+      type: object
+    - properties:
+        domain_delete:
+          $ref: '#/$defs/domain_sNameType'
+      required:
+      - domain_delete
+      type: object
+    - properties:
+        domain_info:
+          $ref: '#/$defs/domain_infoType'
+      required:
+      - domain_info
+      type: object
+    - properties:
+        domain_transfer:
+          $ref: '#/$defs/domain_transferType'
+      required:
+      - domain_transfer
+      type: object
+    - properties:
+        domain_update:
+          $ref: '#/$defs/domain_updateType'
+      required:
+      - domain_update
+      type: object
+    - properties:
+        host_check:
+          $ref: '#/$defs/host_mNameType'
+      required:
+      - host_check
+      type: object
+    - properties:
+        host_create:
+          $ref: '#/$defs/host_createType'
+      required:
+      - host_create
+      type: object
+    - properties:
+        host_delete:
+          $ref: '#/$defs/host_sNameType'
+      required:
+      - host_delete
+      type: object
+    - properties:
+        host_info:
+          $ref: '#/$defs/host_sNameType'
+      required:
+      - host_info
+      type: object
+    - properties:
+        host_update:
+          $ref: '#/$defs/host_updateType'
+      required:
+      - host_update
+      type: object
+    - properties:
+        contact_check:
+          $ref: '#/$defs/contact_mIDType'
+      required:
+      - contact_check
+      type: object
+    - properties:
+        contact_create:
+          $ref: '#/$defs/contact_createType'
+      required:
+      - contact_create
+      type: object
+    - properties:
+        contact_delete:
+          $ref: '#/$defs/contact_sIDType'
+      required:
+      - contact_delete
+      type: object
+    - properties:
+        contact_info:
+          $ref: '#/$defs/contact_authIDType'
+      required:
+      - contact_info
+      type: object
+    - properties:
+        contact_transfer:
+          $ref: '#/$defs/contact_authIDType'
+      required:
+      - contact_transfer
+      type: object
+    - properties:
+        contact_update:
+          $ref: '#/$defs/contact_updateType'
+      required:
+      - contact_update
+      type: object
+    - properties:
+        secDNS_create:
+          $ref: '#/$defs/secDNS_dsOrKeyType'
+      required:
+      - secDNS_create
+      type: object
+    - properties:
+        secDNS_update:
+          $ref: '#/$defs/secDNS_updateType'
+      required:
+      - secDNS_update
+      type: object
+  epp_responseType:
+    properties:
+      extension:
+        $ref: '#/$defs/epp_extAnyType'
+      msgQ:
+        $ref: '#/$defs/epp_msgQType'
+      resData:
+        $ref: '#/$defs/epp_extAnyType'
+      result:
+        items:
+          $ref: '#/$defs/epp_resultType'
+        minItems: 1
+        type: array
+      trID:
+        $ref: '#/$defs/epp_trIDType'
+    required:
+    - result
+    - trID
+    type: object
+  epp_resultCodeType:
+    enum: &id011
+    - 1000
+    - 1001
+    - 1300
+    - 1301
+    - 1500
+    - 2000
+    - 2001
+    - 2002
+    - 2003
+    - 2004
+    - 2005
+    - 2100
+    - 2101
+    - 2102
+    - 2103
+    - 2104
+    - 2105
+    - 2106
+    - 2200
+    - 2201
+    - 2202
+    - 2300
+    - 2301
+    - 2302
+    - 2303
+    - 2304
+    - 2305
+    - 2306
+    - 2307
+    - 2308
+    - 2400
+    - 2500
+    - 2501
+    - 2502
+    maximum: 65535
+    minimum: 0
+    type: integer
+  epp_resultType:
+    allOf:
+    - properties: &id012
+        '@code':
+          enum: *id011
+          maximum: 65535
+          minimum: 0
+          type: integer
+        msg:
+          $ref: '#/$defs/epp_msgType'
+      required: &id013
+      - msg
+      type: object
+    - oneOf:
+      - properties:
+          value:
+            $ref: '#/$defs/epp_errValueType'
+        required:
+        - value
+        type: object
+      - properties:
+          extValue:
+            $ref: '#/$defs/epp_extErrValueType'
+        required:
+        - extValue
+        type: object
+    properties: *id012
+    required: *id013
+    type: object
+  epp_sIDType:
+    maxLength: 64
+    minLength: 3
+    type: string
+  epp_svcMenuType:
+    properties:
+      lang:
+        items:
+          type: string
+        minItems: 1
+        type: array
+      objURI:
+        items:
+          format: uri
+          type: string
+        minItems: 1
+        type: array
+      svcExtension:
+        $ref: '#/$defs/epp_extURIType'
+      version:
+        items:
+          $ref: '#/$defs/epp_versionType'
+        minItems: 1
+        type: array
+    required:
+    - version
+    - lang
+    - objURI
+    type: object
+  epp_trIDStringType:
+    maxLength: 64
+    minLength: 3
+    type: string
+  epp_trIDType:
+    properties:
+      clTRID:
+        $ref: '#/$defs/epp_trIDStringType'
+      svTRID:
+        $ref: '#/$defs/epp_trIDStringType'
+    required:
+    - svTRID
+    type: object
+  epp_transferOpType:
+    enum: &id014
+    - approve
+    - cancel
+    - query
+    - reject
+    - request
+    type: string
+  epp_transferType:
+    allOf:
+    - properties: &id015
+        '@op':
+          enum: *id014
+          type: string
+      type: object
+    - type: object
+    properties: *id015
+    type: object
+  epp_versionType:
+    enum:
+    - '1.0'
+    type: string
+  eppcom_clIDType:
+    maxLength: 16
+    minLength: 3
+    type: string
+  eppcom_extAuthInfoType:
+    allOf:
+    - properties: &id016 {}
+      type: object
+    - type: object
+    properties: *id016
+    type: object
+  eppcom_labelType:
+    maxLength: 255
+    minLength: 1
+    type: string
+  eppcom_minTokenType:
+    minLength: 1
+    type: string
+  eppcom_pwAuthInfoType:
+    properties:
+      '#value':
+        type: string
+      '@roid':
+        type: string
+    type: object
+  eppcom_reasonBaseType:
+    maxLength: 32
+    minLength: 1
+    type: string
+  eppcom_reasonType:
+    properties:
+      '#value':
+        maxLength: 32
+        minLength: 1
+        type: string
+      '@lang':
+        type: string
+    type: object
+  eppcom_roidType:
+    type: string
+  eppcom_trStatusType:
+    enum:
+    - clientApproved
+    - clientCancelled
+    - clientRejected
+    - pending
+    - serverApproved
+    - serverCancelled
+    type: string
+  host_addRemType:
+    properties:
+      addr:
+        items:
+          $ref: '#/$defs/host_addrType'
+        minItems: 0
+        type: array
+      status:
+        items:
+          $ref: '#/$defs/host_statusType'
+        maxItems: 7
+        minItems: 0
+        type: array
+    type: object
+  host_addrStringType:
+    maxLength: 45
+    minLength: 3
+    type: string
+  host_addrType:
+    properties:
+      '#value':
+        maxLength: 45
+        minLength: 3
+        type: string
+      '@ip':
+        enum: &id017
+        - v4
+        - v6
+        type: string
+    type: object
+  host_checkNameType:
+    properties:
+      '#value':
+        maxLength: 255
+        minLength: 1
+        type: string
+      '@avail':
+        type: boolean
+    type: object
+  host_checkType:
+    properties:
+      name:
+        $ref: '#/$defs/host_checkNameType'
+      reason:
+        $ref: '#/$defs/eppcom_reasonType'
+    required:
+    - name
+    type: object
+  host_chgType:
+    properties:
+      name:
+        $ref: '#/$defs/eppcom_labelType'
+    required:
+    - name
+    type: object
+  host_chkDataType:
+    properties:
+      cd:
+        items:
+          $ref: '#/$defs/host_checkType'
+        minItems: 1
+        type: array
+    required:
+    - cd
+    type: object
+  host_creDataType:
+    properties:
+      crDate:
+        format: date-time
+        type: string
+      name:
+        $ref: '#/$defs/eppcom_labelType'
+    required:
+    - name
+    - crDate
+    type: object
+  host_createType:
+    properties:
+      addr:
+        items:
+          $ref: '#/$defs/host_addrType'
+        minItems: 0
+        type: array
+      name:
+        $ref: '#/$defs/eppcom_labelType'
+    required:
+    - name
+    type: object
+  host_infDataType:
+    properties:
+      addr:
+        items:
+          $ref: '#/$defs/host_addrType'
+        minItems: 0
+        type: array
+      clID:
+        $ref: '#/$defs/eppcom_clIDType'
+      crDate:
+        format: date-time
+        type: string
+      crID:
+        $ref: '#/$defs/eppcom_clIDType'
+      name:
+        $ref: '#/$defs/eppcom_labelType'
+      roid:
+        $ref: '#/$defs/eppcom_roidType'
+      status:
+        items:
+          $ref: '#/$defs/host_statusType'
+        maxItems: 7
+        minItems: 1
+        type: array
+      trDate:
+        format: date-time
+        type: string
+      upDate:
+        format: date-time
+        type: string
+      upID:
+        $ref: '#/$defs/eppcom_clIDType'
+    required:
+    - name
+    - roid
+    - status
+    - clID
+    - crID
+    - crDate
+    type: object
+  host_ipType:
+    enum: *id017
+    type: string
+  host_mNameType:
+    properties:
+      name:
+        items:
+          $ref: '#/$defs/eppcom_labelType'
+        minItems: 1
+        type: array
+    required:
+    - name
+    type: object
+  host_paNameType:
+    properties:
+      '#value':
+        maxLength: 255
+        minLength: 1
+        type: string
+      '@paResult':
+        type: boolean
+    type: object
+  host_panDataType:
+    properties:
+      name:
+        $ref: '#/$defs/host_paNameType'
+      paDate:
+        format: date-time
+        type: string
+      paTRID:
+        $ref: '#/$defs/epp_trIDType'
+    required:
+    - name
+    - paTRID
+    - paDate
+    type: object
+  host_sNameType:
+    properties:
+      name:
+        $ref: '#/$defs/eppcom_labelType'
+    required:
+    - name
+    type: object
+  host_statusType:
+    properties:
+      '#value':
+        type: string
+      '@lang':
+        type: string
+      '@s':
+        enum: &id018
+        - clientDeleteProhibited
+        - clientUpdateProhibited
+        - linked
+        - ok
+        - pendingCreate
+        - pendingDelete
+        - pendingTransfer
+        - pendingUpdate
+        - serverDeleteProhibited
+        - serverUpdateProhibited
+        type: string
+    type: object
+  host_statusValueType:
+    enum: *id018
+    type: string
+  host_updateType:
+    properties:
+      add:
+        $ref: '#/$defs/host_addRemType'
+      chg:
+        $ref: '#/$defs/host_chgType'
+      name:
+        $ref: '#/$defs/eppcom_labelType'
+      rem:
+        $ref: '#/$defs/host_addRemType'
+    required:
+    - name
+    type: object
+  secDNS_chgType:
+    properties:
+      maxSigLife:
+        $ref: '#/$defs/secDNS_maxSigLifeType'
+    type: object
+  secDNS_dsDataType:
+    properties:
+      alg:
+        type: integer
+      digest:
+        pattern: '[0-9a-fA-F]+'
+        type: string
+      digestType:
+        type: integer
+      keyData:
+        $ref: '#/$defs/secDNS_keyDataType'
+      keyTag:
+        type: integer
+    required:
+    - keyTag
+    - alg
+    - digestType
+    - digest
+    type: object
+  secDNS_dsOrKeyType:
+    allOf:
+    - properties: &id019
+        maxSigLife:
+          $ref: '#/$defs/secDNS_maxSigLifeType'
+      type: object
+    - oneOf:
+      - properties:
+          dsData:
+            items:
+              $ref: '#/$defs/secDNS_dsDataType'
+            minItems: 1
+            type: array
+        required:
+        - dsData
+        type: object
+      - properties:
+          keyData:
+            items:
+              $ref: '#/$defs/secDNS_keyDataType'
+            minItems: 1
+            type: array
+        required:
+        - keyData
+        type: object
+    properties: *id019
+    type: object
+  secDNS_keyDataType:
+    properties:
+      alg:
+        type: integer
+      flags:
+        type: integer
+      protocol:
+        type: integer
+      pubKey:
+        $ref: '#/$defs/secDNS_keyType'
+    required:
+    - flags
+    - protocol
+    - alg
+    - pubKey
+    type: object
+  secDNS_keyType:
+    minLength: 1
+    type: string
+  secDNS_maxSigLifeType:
+    maximum: 2147483647
+    minimum: 1
+    type: integer
+  secDNS_remType:
+    oneOf:
+    - properties:
+        all:
+          type: boolean
+      required:
+      - all
+      type: object
+    - properties:
+        dsData:
+          items:
+            $ref: '#/$defs/secDNS_dsDataType'
+          minItems: 1
+          type: array
+      required:
+      - dsData
+      type: object
+    - properties:
+        keyData:
+          items:
+            $ref: '#/$defs/secDNS_keyDataType'
+          minItems: 1
+          type: array
+      required:
+      - keyData
+      type: object
+  secDNS_updateType:
+    properties:
+      '@urgent':
+        type: boolean
+      add:
+        $ref: '#/$defs/secDNS_dsOrKeyType'
+      chg:
+        $ref: '#/$defs/secDNS_chgType'
+      rem:
+        $ref: '#/$defs/secDNS_remType'
+    type: object
+$schema: https://json-schema.org/draft/2020-12/schema
+type: object
+unevaluatedProperties: false

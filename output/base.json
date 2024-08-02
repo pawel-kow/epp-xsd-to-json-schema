@@ -1,0 +1,1059 @@
+{
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "unevaluatedProperties": false,
+  "$defs": {
+    "epp_sIDType": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 64
+    },
+    "epp_dcpRecDescType": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 255
+    },
+    "epp_versionType": {
+      "type": "string",
+      "enum": [
+        "1.0"
+      ]
+    },
+    "epp_pwType": {
+      "type": "string",
+      "minLength": 6,
+      "maxLength": 16
+    },
+    "epp_pollOpType": {
+      "type": "string",
+      "enum": [
+        "ack",
+        "req"
+      ]
+    },
+    "epp_transferOpType": {
+      "type": "string",
+      "enum": [
+        "approve",
+        "cancel",
+        "query",
+        "reject",
+        "request"
+      ]
+    },
+    "epp_trIDStringType": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 64
+    },
+    "epp_resultCodeType": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 65535,
+      "enum": [
+        1000,
+        1001,
+        1300,
+        1301,
+        1500,
+        2000,
+        2001,
+        2002,
+        2003,
+        2004,
+        2005,
+        2100,
+        2101,
+        2102,
+        2103,
+        2104,
+        2105,
+        2106,
+        2200,
+        2201,
+        2202,
+        2300,
+        2301,
+        2302,
+        2303,
+        2304,
+        2305,
+        2306,
+        2307,
+        2308,
+        2400,
+        2500,
+        2501,
+        2502
+      ]
+    },
+    "epp_eppType": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "greeting": {
+              "$ref": "#/$defs/epp_greetingType"
+            }
+          },
+          "required": [
+            "greeting"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "hello": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          "required": [
+            "hello"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "command": {
+              "$ref": "#/$defs/epp_commandType"
+            }
+          },
+          "required": [
+            "command"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "response": {
+              "$ref": "#/$defs/epp_responseType"
+            }
+          },
+          "required": [
+            "response"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "extension": {
+              "$ref": "#/$defs/epp_extAnyType"
+            }
+          },
+          "required": [
+            "extension"
+          ]
+        }
+      ]
+    },
+    "epp_greetingType": {
+      "type": "object",
+      "properties": {
+        "svID": {
+          "$ref": "#/$defs/epp_sIDType"
+        },
+        "svDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "svcMenu": {
+          "$ref": "#/$defs/epp_svcMenuType"
+        },
+        "dcp": {
+          "$ref": "#/$defs/epp_dcpType"
+        }
+      },
+      "required": [
+        "svID",
+        "svDate",
+        "svcMenu",
+        "dcp"
+      ]
+    },
+    "epp_svcMenuType": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/epp_versionType"
+          },
+          "minItems": 1
+        },
+        "lang": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "objURI": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          },
+          "minItems": 1
+        },
+        "svcExtension": {
+          "$ref": "#/$defs/epp_extURIType"
+        }
+      },
+      "required": [
+        "version",
+        "lang",
+        "objURI"
+      ]
+    },
+    "epp_dcpType": {
+      "type": "object",
+      "properties": {
+        "access": {
+          "$ref": "#/$defs/epp_dcpAccessType"
+        },
+        "statement": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/epp_dcpStatementType"
+          },
+          "minItems": 1
+        },
+        "expiry": {
+          "$ref": "#/$defs/epp_dcpExpiryType"
+        }
+      },
+      "required": [
+        "access",
+        "statement"
+      ]
+    },
+    "epp_dcpAccessType": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "all": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          "required": [
+            "all"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "none": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          "required": [
+            "none"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "null": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          "required": [
+            "null"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "other": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          "required": [
+            "other"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "personal": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          "required": [
+            "personal"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "personalAndOther": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          "required": [
+            "personalAndOther"
+          ]
+        }
+      ]
+    },
+    "epp_dcpStatementType": {
+      "type": "object",
+      "properties": {
+        "purpose": {
+          "$ref": "#/$defs/epp_dcpPurposeType"
+        },
+        "recipient": {
+          "$ref": "#/$defs/epp_dcpRecipientType"
+        },
+        "retention": {
+          "$ref": "#/$defs/epp_dcpRetentionType"
+        }
+      },
+      "required": [
+        "purpose",
+        "recipient",
+        "retention"
+      ]
+    },
+    "epp_dcpPurposeType": {
+      "type": "object",
+      "properties": {
+        "admin": {
+          "type": "boolean",
+          "default": false
+        },
+        "contact": {
+          "type": "boolean",
+          "default": false
+        },
+        "other": {
+          "type": "boolean",
+          "default": false
+        },
+        "prov": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    },
+    "epp_dcpRecipientType": {
+      "type": "object",
+      "properties": {
+        "other": {
+          "type": "boolean",
+          "default": false
+        },
+        "ours": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/epp_dcpOursType"
+          },
+          "minItems": 0
+        },
+        "public": {
+          "type": "boolean",
+          "default": false
+        },
+        "same": {
+          "type": "boolean",
+          "default": false
+        },
+        "unrelated": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    },
+    "epp_dcpOursType": {
+      "type": "object",
+      "properties": {
+        "recDesc": {
+          "$ref": "#/$defs/epp_dcpRecDescType"
+        }
+      }
+    },
+    "epp_dcpRetentionType": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "business": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          "required": [
+            "business"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "indefinite": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          "required": [
+            "indefinite"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "legal": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          "required": [
+            "legal"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "none": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          "required": [
+            "none"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "stated": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          "required": [
+            "stated"
+          ]
+        }
+      ]
+    },
+    "epp_dcpExpiryType": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "absolute": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "required": [
+            "absolute"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "relative": {
+              "type": "string",
+              "format": "duration"
+            }
+          },
+          "required": [
+            "relative"
+          ]
+        }
+      ]
+    },
+    "epp_extAnyType": {
+      "allOf": [
+        {
+          "type": "object",
+          "properties": {}
+        },
+        {
+          "type": "object"
+        }
+      ],
+      "type": "object",
+      "properties": {}
+    },
+    "epp_extURIType": {
+      "type": "object",
+      "properties": {
+        "extURI": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "extURI"
+      ]
+    },
+    "epp_commandType": {
+      "allOf": [
+        {
+          "type": "object",
+          "properties": {
+            "extension": {
+              "$ref": "#/$defs/epp_extAnyType"
+            },
+            "clTRID": {
+              "$ref": "#/$defs/epp_trIDStringType"
+            }
+          }
+        },
+        {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "check": {
+                  "$ref": "#/$defs/epp_readWriteType"
+                }
+              },
+              "required": [
+                "check"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "create": {
+                  "$ref": "#/$defs/epp_readWriteType"
+                }
+              },
+              "required": [
+                "create"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "delete": {
+                  "$ref": "#/$defs/epp_readWriteType"
+                }
+              },
+              "required": [
+                "delete"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "info": {
+                  "$ref": "#/$defs/epp_readWriteType"
+                }
+              },
+              "required": [
+                "info"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "login": {
+                  "$ref": "#/$defs/epp_loginType"
+                }
+              },
+              "required": [
+                "login"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "logout": {
+                  "type": "boolean",
+                  "default": false
+                }
+              },
+              "required": [
+                "logout"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "poll": {
+                  "$ref": "#/$defs/epp_pollType"
+                }
+              },
+              "required": [
+                "poll"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "renew": {
+                  "$ref": "#/$defs/epp_readWriteType"
+                }
+              },
+              "required": [
+                "renew"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "transfer": {
+                  "$ref": "#/$defs/epp_transferType"
+                }
+              },
+              "required": [
+                "transfer"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "update": {
+                  "$ref": "#/$defs/epp_readWriteType"
+                }
+              },
+              "required": [
+                "update"
+              ]
+            }
+          ]
+        }
+      ],
+      "type": "object",
+      "properties": {
+        "extension": {
+          "$ref": "#/$defs/epp_extAnyType"
+        },
+        "clTRID": {
+          "$ref": "#/$defs/epp_trIDStringType"
+        }
+      }
+    },
+    "epp_loginType": {
+      "type": "object",
+      "properties": {
+        "clID": {
+          "$ref": "shared.json#/$defs/eppcom_clIDType"
+        },
+        "pw": {
+          "$ref": "#/$defs/epp_pwType"
+        },
+        "newPW": {
+          "$ref": "#/$defs/epp_pwType"
+        },
+        "options": {
+          "$ref": "#/$defs/epp_credsOptionsType"
+        },
+        "svcs": {
+          "$ref": "#/$defs/epp_loginSvcType"
+        }
+      },
+      "required": [
+        "clID",
+        "pw",
+        "options",
+        "svcs"
+      ]
+    },
+    "epp_credsOptionsType": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "$ref": "#/$defs/epp_versionType"
+        },
+        "lang": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "version",
+        "lang"
+      ]
+    },
+    "epp_loginSvcType": {
+      "type": "object",
+      "properties": {
+        "objURI": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          },
+          "minItems": 1
+        },
+        "svcExtension": {
+          "$ref": "#/$defs/epp_extURIType"
+        }
+      },
+      "required": [
+        "objURI"
+      ]
+    },
+    "epp_pollType": {
+      "type": "object",
+      "properties": {
+        "@op": {
+          "type": "string",
+          "enum": [
+            "ack",
+            "req"
+          ]
+        },
+        "@msgID": {
+          "type": "string"
+        }
+      }
+    },
+    "epp_transferType": {
+      "allOf": [
+        {
+          "type": "object",
+          "properties": {
+            "@op": {
+              "type": "string",
+              "enum": [
+                "approve",
+                "cancel",
+                "query",
+                "reject",
+                "request"
+              ]
+            }
+          }
+        },
+        {
+          "type": "object"
+        }
+      ],
+      "type": "object",
+      "properties": {
+        "@op": {
+          "type": "string",
+          "enum": [
+            "approve",
+            "cancel",
+            "query",
+            "reject",
+            "request"
+          ]
+        }
+      }
+    },
+    "epp_readWriteType": {
+      "allOf": [
+        {
+          "type": "object",
+          "properties": {}
+        },
+        {
+          "type": "object"
+        }
+      ],
+      "type": "object",
+      "properties": {}
+    },
+    "epp_trIDType": {
+      "type": "object",
+      "properties": {
+        "clTRID": {
+          "$ref": "#/$defs/epp_trIDStringType"
+        },
+        "svTRID": {
+          "$ref": "#/$defs/epp_trIDStringType"
+        }
+      },
+      "required": [
+        "svTRID"
+      ]
+    },
+    "epp_responseType": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/epp_resultType"
+          },
+          "minItems": 1
+        },
+        "msgQ": {
+          "$ref": "#/$defs/epp_msgQType"
+        },
+        "resData": {
+          "$ref": "#/$defs/epp_extAnyType"
+        },
+        "extension": {
+          "$ref": "#/$defs/epp_extAnyType"
+        },
+        "trID": {
+          "$ref": "#/$defs/epp_trIDType"
+        }
+      },
+      "required": [
+        "result",
+        "trID"
+      ]
+    },
+    "epp_resultType": {
+      "allOf": [
+        {
+          "type": "object",
+          "properties": {
+            "msg": {
+              "$ref": "#/$defs/epp_msgType"
+            },
+            "@code": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 65535,
+              "enum": [
+                1000,
+                1001,
+                1300,
+                1301,
+                1500,
+                2000,
+                2001,
+                2002,
+                2003,
+                2004,
+                2005,
+                2100,
+                2101,
+                2102,
+                2103,
+                2104,
+                2105,
+                2106,
+                2200,
+                2201,
+                2202,
+                2300,
+                2301,
+                2302,
+                2303,
+                2304,
+                2305,
+                2306,
+                2307,
+                2308,
+                2400,
+                2500,
+                2501,
+                2502
+              ]
+            }
+          },
+          "required": [
+            "msg"
+          ]
+        },
+        {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "$ref": "#/$defs/epp_errValueType"
+                }
+              },
+              "required": [
+                "value"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "extValue": {
+                  "$ref": "#/$defs/epp_extErrValueType"
+                }
+              },
+              "required": [
+                "extValue"
+              ]
+            }
+          ]
+        }
+      ],
+      "type": "object",
+      "properties": {
+        "msg": {
+          "$ref": "#/$defs/epp_msgType"
+        },
+        "@code": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "enum": [
+            1000,
+            1001,
+            1300,
+            1301,
+            1500,
+            2000,
+            2001,
+            2002,
+            2003,
+            2004,
+            2005,
+            2100,
+            2101,
+            2102,
+            2103,
+            2104,
+            2105,
+            2106,
+            2200,
+            2201,
+            2202,
+            2300,
+            2301,
+            2302,
+            2303,
+            2304,
+            2305,
+            2306,
+            2307,
+            2308,
+            2400,
+            2500,
+            2501,
+            2502
+          ]
+        }
+      },
+      "required": [
+        "msg"
+      ]
+    },
+    "epp_errValueType": {
+      "allOf": [
+        {
+          "type": "object",
+          "properties": {
+            "#text": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        {
+          "type": "object"
+        }
+      ],
+      "type": "object",
+      "properties": {
+        "#text": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "epp_extErrValueType": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "$ref": "#/$defs/epp_errValueType"
+        },
+        "reason": {
+          "$ref": "#/$defs/epp_msgType"
+        }
+      },
+      "required": [
+        "value",
+        "reason"
+      ]
+    },
+    "epp_msgQType": {
+      "type": "object",
+      "properties": {
+        "qDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "msg": {
+          "$ref": "#/$defs/epp_mixedMsgType"
+        },
+        "@count": {
+          "type": "integer"
+        },
+        "@id": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "epp_mixedMsgType": {
+      "allOf": [
+        {
+          "type": "object",
+          "properties": {
+            "#text": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "@lang": {
+              "type": "string"
+            }
+          }
+        },
+        {
+          "type": "object"
+        }
+      ],
+      "type": "object",
+      "properties": {
+        "#text": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "@lang": {
+          "type": "string"
+        }
+      }
+    },
+    "epp_msgType": {
+      "properties": {
+        "@lang": {
+          "type": "string"
+        },
+        "#value": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "anyOf": [
+    {
+      "type": "object",
+      "properties": {
+        "epp_epp": {
+          "$ref": "#/$defs/epp_eppType"
+        }
+      },
+      "required": [
+        "epp_epp"
+      ]
+    }
+  ]
+}
