@@ -14,6 +14,7 @@ The schemas are generated under `/output`
 | Name  | Description  |
 |---|---|
 | rpp.json  | Main entrypoint contains custom RPP structures  |
+| rpp_merged.json  | Merged version of RPP schema  |
 | base.json | Core EPP protcol structures
 | shared.json | Shared EPP structures
 | epp-schema.json  | Merged schema containing all EPP structures
