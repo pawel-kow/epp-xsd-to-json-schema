@@ -5,7 +5,7 @@
 - checkout the code including submodules
 - Install python and create virtual environment
 - restore dependencies from requirements.txt
-- run convert.py
+- run convert_epp_xsd_to_json_schema.py
 
 ## Generated schemas
 
