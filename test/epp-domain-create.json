@@ -1,0 +1,18 @@
+{
+  "request": {
+      "create": {
+        "domain_create": {
+          "name": "example.nl",
+          "period": {"#value": 1, "@unit": "y"},
+          "contact": [
+            { "@type": "admin", "#value": "XXX-123"},
+            { "@type": "tech", "#value": "XXX-123"},
+            { "@type": "billing", "#value": "XXX-123"}
+          ],
+          "registrant": "XXX-999",
+          "ns": { "hostObj": ["ns1.example.nl"]},
+          "authInfo": {"pw": {"#value": "my-secret-token"}}
+        }
+      }
+  }
+}

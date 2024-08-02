@@ -1,8 +1,0 @@
-{
-    "command": {
-        "delete": 
-            {
-                "name": ["example.nl", "example2.nl"]
-            }
-    }
-}
