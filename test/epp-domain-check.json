@@ -1,0 +1,9 @@
+{
+  "request": {
+      "check": {
+        "domain_check": {
+          "name": ["example.nl"]
+        }
+      }
+  }
+}

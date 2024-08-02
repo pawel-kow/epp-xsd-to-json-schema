@@ -1,0 +1,45 @@
+{
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "unevaluatedProperties": false,
+  "$defs": {
+    "rpp": {
+      "oneOf": [
+         {
+          "type": "object",
+          "properties": {
+            "request": {
+              "$ref": "{{ epp_schema_file }}#/$defs/epp_commandType"
+            }
+          },
+          "required": [
+            "request"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "response": {
+              "$ref": "{{ epp_schema_file }}#/$defs/epp_responseType"
+            }
+          },
+          "required": [
+            "response"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "extension": {
+              "$ref": "{{ epp_schema_file }}#/$defs/epp_extAnyType"
+            }
+          },
+          "required": [
+            "extension"
+          ]
+        }
+      ]
+    }
+  },
+  "$ref": "#/$defs/rpp"
+}

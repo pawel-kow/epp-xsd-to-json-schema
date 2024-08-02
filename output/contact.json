@@ -1,0 +1,711 @@
+{
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "unevaluatedProperties": false,
+  "$defs": {
+    "contact_ccType": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 2
+    },
+    "contact_e164StringType": {
+      "type": "string",
+      "maxLength": 17
+    },
+    "contact_pcType": {
+      "type": "string",
+      "maxLength": 16
+    },
+    "contact_postalLineType": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 255
+    },
+    "contact_optPostalLineType": {
+      "type": "string",
+      "maxLength": 255
+    },
+    "contact_postalInfoEnumType": {
+      "type": "string",
+      "enum": [
+        "loc",
+        "int"
+      ]
+    },
+    "contact_statusValueType": {
+      "type": "string",
+      "enum": [
+        "clientDeleteProhibited",
+        "clientTransferProhibited",
+        "clientUpdateProhibited",
+        "linked",
+        "ok",
+        "pendingCreate",
+        "pendingDelete",
+        "pendingTransfer",
+        "pendingUpdate",
+        "serverDeleteProhibited",
+        "serverTransferProhibited",
+        "serverUpdateProhibited"
+      ]
+    },
+    "contact_e164Type": {
+      "properties": {
+        "@x": {
+          "type": "string"
+        },
+        "#value": {
+          "type": "string",
+          "maxLength": 17
+        }
+      },
+      "type": "object"
+    },
+    "contact_createType": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "shared.json#/$defs/eppcom_clIDType"
+        },
+        "postalInfo": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/contact_postalInfoType"
+          },
+          "maxItems": 2,
+          "minItems": 1
+        },
+        "voice": {
+          "$ref": "#/$defs/contact_e164Type"
+        },
+        "fax": {
+          "$ref": "#/$defs/contact_e164Type"
+        },
+        "email": {
+          "$ref": "shared.json#/$defs/eppcom_minTokenType"
+        },
+        "authInfo": {
+          "$ref": "#/$defs/contact_authInfoType"
+        },
+        "disclose": {
+          "$ref": "#/$defs/contact_discloseType"
+        }
+      },
+      "required": [
+        "id",
+        "postalInfo",
+        "email",
+        "authInfo"
+      ]
+    },
+    "contact_postalInfoType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "$ref": "#/$defs/contact_postalLineType"
+        },
+        "org": {
+          "$ref": "#/$defs/contact_optPostalLineType"
+        },
+        "addr": {
+          "$ref": "#/$defs/contact_addrType"
+        },
+        "@type": {
+          "type": "string",
+          "enum": [
+            "loc",
+            "int"
+          ]
+        }
+      },
+      "required": [
+        "name",
+        "addr"
+      ]
+    },
+    "contact_addrType": {
+      "type": "object",
+      "properties": {
+        "street": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/contact_optPostalLineType"
+          },
+          "maxItems": 3,
+          "minItems": 0
+        },
+        "city": {
+          "$ref": "#/$defs/contact_postalLineType"
+        },
+        "sp": {
+          "$ref": "#/$defs/contact_optPostalLineType"
+        },
+        "pc": {
+          "$ref": "#/$defs/contact_pcType"
+        },
+        "cc": {
+          "$ref": "#/$defs/contact_ccType"
+        }
+      },
+      "required": [
+        "city",
+        "cc"
+      ]
+    },
+    "contact_authInfoType": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "pw": {
+              "$ref": "shared.json#/$defs/eppcom_pwAuthInfoType"
+            }
+          },
+          "required": [
+            "pw"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "ext": {
+              "$ref": "shared.json#/$defs/eppcom_extAuthInfoType"
+            }
+          },
+          "required": [
+            "ext"
+          ]
+        }
+      ]
+    },
+    "contact_discloseType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/contact_intLocType"
+          },
+          "maxItems": 2,
+          "minItems": 0
+        },
+        "org": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/contact_intLocType"
+          },
+          "maxItems": 2,
+          "minItems": 0
+        },
+        "addr": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/contact_intLocType"
+          },
+          "maxItems": 2,
+          "minItems": 0
+        },
+        "voice": {
+          "type": "boolean",
+          "default": false
+        },
+        "fax": {
+          "type": "boolean",
+          "default": false
+        },
+        "email": {
+          "type": "boolean",
+          "default": false
+        },
+        "@flag": {
+          "type": "boolean"
+        }
+      }
+    },
+    "contact_intLocType": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string",
+          "enum": [
+            "loc",
+            "int"
+          ]
+        }
+      }
+    },
+    "contact_sIDType": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "shared.json#/$defs/eppcom_clIDType"
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "contact_mIDType": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "array",
+          "items": {
+            "$ref": "shared.json#/$defs/eppcom_clIDType"
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "contact_authIDType": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "shared.json#/$defs/eppcom_clIDType"
+        },
+        "authInfo": {
+          "$ref": "#/$defs/contact_authInfoType"
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "contact_updateType": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "shared.json#/$defs/eppcom_clIDType"
+        },
+        "add": {
+          "$ref": "#/$defs/contact_addRemType"
+        },
+        "rem": {
+          "$ref": "#/$defs/contact_addRemType"
+        },
+        "chg": {
+          "$ref": "#/$defs/contact_chgType"
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "contact_addRemType": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/contact_statusType"
+          },
+          "maxItems": 7,
+          "minItems": 1
+        }
+      },
+      "required": [
+        "status"
+      ]
+    },
+    "contact_chgType": {
+      "type": "object",
+      "properties": {
+        "postalInfo": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/contact_chgPostalInfoType"
+          },
+          "maxItems": 2,
+          "minItems": 0
+        },
+        "voice": {
+          "$ref": "#/$defs/contact_e164Type"
+        },
+        "fax": {
+          "$ref": "#/$defs/contact_e164Type"
+        },
+        "email": {
+          "$ref": "shared.json#/$defs/eppcom_minTokenType"
+        },
+        "authInfo": {
+          "$ref": "#/$defs/contact_authInfoType"
+        },
+        "disclose": {
+          "$ref": "#/$defs/contact_discloseType"
+        }
+      }
+    },
+    "contact_chgPostalInfoType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "$ref": "#/$defs/contact_postalLineType"
+        },
+        "org": {
+          "$ref": "#/$defs/contact_optPostalLineType"
+        },
+        "addr": {
+          "$ref": "#/$defs/contact_addrType"
+        },
+        "@type": {
+          "type": "string",
+          "enum": [
+            "loc",
+            "int"
+          ]
+        }
+      }
+    },
+    "contact_chkDataType": {
+      "type": "object",
+      "properties": {
+        "cd": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/contact_checkType"
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "cd"
+      ]
+    },
+    "contact_checkType": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/contact_checkIDType"
+        },
+        "reason": {
+          "$ref": "shared.json#/$defs/eppcom_reasonType"
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "contact_checkIDType": {
+      "properties": {
+        "@avail": {
+          "type": "boolean"
+        },
+        "#value": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 16
+        }
+      },
+      "type": "object"
+    },
+    "contact_creDataType": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "shared.json#/$defs/eppcom_clIDType"
+        },
+        "crDate": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "crDate"
+      ]
+    },
+    "contact_infDataType": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "shared.json#/$defs/eppcom_clIDType"
+        },
+        "roid": {
+          "$ref": "shared.json#/$defs/eppcom_roidType"
+        },
+        "status": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/contact_statusType"
+          },
+          "maxItems": 7,
+          "minItems": 1
+        },
+        "postalInfo": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/contact_postalInfoType"
+          },
+          "maxItems": 2,
+          "minItems": 1
+        },
+        "voice": {
+          "$ref": "#/$defs/contact_e164Type"
+        },
+        "fax": {
+          "$ref": "#/$defs/contact_e164Type"
+        },
+        "email": {
+          "$ref": "shared.json#/$defs/eppcom_minTokenType"
+        },
+        "clID": {
+          "$ref": "shared.json#/$defs/eppcom_clIDType"
+        },
+        "crID": {
+          "$ref": "shared.json#/$defs/eppcom_clIDType"
+        },
+        "crDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "upID": {
+          "$ref": "shared.json#/$defs/eppcom_clIDType"
+        },
+        "upDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "trDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "authInfo": {
+          "$ref": "#/$defs/contact_authInfoType"
+        },
+        "disclose": {
+          "$ref": "#/$defs/contact_discloseType"
+        }
+      },
+      "required": [
+        "id",
+        "roid",
+        "status",
+        "postalInfo",
+        "email",
+        "clID",
+        "crID",
+        "crDate"
+      ]
+    },
+    "contact_statusType": {
+      "properties": {
+        "@s": {
+          "type": "string",
+          "enum": [
+            "clientDeleteProhibited",
+            "clientTransferProhibited",
+            "clientUpdateProhibited",
+            "linked",
+            "ok",
+            "pendingCreate",
+            "pendingDelete",
+            "pendingTransfer",
+            "pendingUpdate",
+            "serverDeleteProhibited",
+            "serverTransferProhibited",
+            "serverUpdateProhibited"
+          ]
+        },
+        "#value": {
+          "type": "string"
+        },
+        "@lang": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "contact_panDataType": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/contact_paCLIDType"
+        },
+        "paTRID": {
+          "$ref": "base.json#/$defs/epp_trIDType"
+        },
+        "paDate": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "paTRID",
+        "paDate"
+      ]
+    },
+    "contact_paCLIDType": {
+      "properties": {
+        "@paResult": {
+          "type": "boolean"
+        },
+        "#value": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 16
+        }
+      },
+      "type": "object"
+    },
+    "contact_trnDataType": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "shared.json#/$defs/eppcom_clIDType"
+        },
+        "trStatus": {
+          "$ref": "shared.json#/$defs/eppcom_trStatusType"
+        },
+        "reID": {
+          "$ref": "shared.json#/$defs/eppcom_clIDType"
+        },
+        "reDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "acID": {
+          "$ref": "shared.json#/$defs/eppcom_clIDType"
+        },
+        "acDate": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "trStatus",
+        "reID",
+        "reDate",
+        "acID",
+        "acDate"
+      ]
+    }
+  },
+  "anyOf": [
+    {
+      "type": "object",
+      "properties": {
+        "contact_check": {
+          "$ref": "#/$defs/contact_mIDType"
+        }
+      },
+      "required": [
+        "contact_check"
+      ]
+    },
+    {
+      "type": "object",
+      "properties": {
+        "contact_create": {
+          "$ref": "#/$defs/contact_createType"
+        }
+      },
+      "required": [
+        "contact_create"
+      ]
+    },
+    {
+      "type": "object",
+      "properties": {
+        "contact_delete": {
+          "$ref": "#/$defs/contact_sIDType"
+        }
+      },
+      "required": [
+        "contact_delete"
+      ]
+    },
+    {
+      "type": "object",
+      "properties": {
+        "contact_info": {
+          "$ref": "#/$defs/contact_authIDType"
+        }
+      },
+      "required": [
+        "contact_info"
+      ]
+    },
+    {
+      "type": "object",
+      "properties": {
+        "contact_transfer": {
+          "$ref": "#/$defs/contact_authIDType"
+        }
+      },
+      "required": [
+        "contact_transfer"
+      ]
+    },
+    {
+      "type": "object",
+      "properties": {
+        "contact_update": {
+          "$ref": "#/$defs/contact_updateType"
+        }
+      },
+      "required": [
+        "contact_update"
+      ]
+    },
+    {
+      "type": "object",
+      "properties": {
+        "contact_chkData": {
+          "$ref": "#/$defs/contact_chkDataType"
+        }
+      },
+      "required": [
+        "contact_chkData"
+      ]
+    },
+    {
+      "type": "object",
+      "properties": {
+        "contact_creData": {
+          "$ref": "#/$defs/contact_creDataType"
+        }
+      },
+      "required": [
+        "contact_creData"
+      ]
+    },
+    {
+      "type": "object",
+      "properties": {
+        "contact_infData": {
+          "$ref": "#/$defs/contact_infDataType"
+        }
+      },
+      "required": [
+        "contact_infData"
+      ]
+    },
+    {
+      "type": "object",
+      "properties": {
+        "contact_panData": {
+          "$ref": "#/$defs/contact_panDataType"
+        }
+      },
+      "required": [
+        "contact_panData"
+      ]
+    },
+    {
+      "type": "object",
+      "properties": {
+        "contact_trnData": {
+          "$ref": "#/$defs/contact_trnDataType"
+        }
+      },
+      "required": [
+        "contact_trnData"
+      ]
+    }
+  ]
+}

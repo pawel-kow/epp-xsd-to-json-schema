@@ -1,0 +1,223 @@
+{
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "unevaluatedProperties": false,
+  "$defs": {
+    "secDNS_maxSigLifeType": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 2147483647
+    },
+    "secDNS_keyType": {
+      "type": "string",
+      "minLength": 1
+    },
+    "secDNS_dsOrKeyType": {
+      "allOf": [
+        {
+          "type": "object",
+          "properties": {
+            "maxSigLife": {
+              "$ref": "#/$defs/secDNS_maxSigLifeType"
+            }
+          }
+        },
+        {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "dsData": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/secDNS_dsDataType"
+                  },
+                  "minItems": 1
+                }
+              },
+              "required": [
+                "dsData"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "keyData": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/secDNS_keyDataType"
+                  },
+                  "minItems": 1
+                }
+              },
+              "required": [
+                "keyData"
+              ]
+            }
+          ]
+        }
+      ],
+      "type": "object",
+      "properties": {
+        "maxSigLife": {
+          "$ref": "#/$defs/secDNS_maxSigLifeType"
+        }
+      }
+    },
+    "secDNS_dsDataType": {
+      "type": "object",
+      "properties": {
+        "keyTag": {
+          "type": "integer"
+        },
+        "alg": {
+          "type": "integer"
+        },
+        "digestType": {
+          "type": "integer"
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "[0-9a-fA-F]+"
+        },
+        "keyData": {
+          "$ref": "#/$defs/secDNS_keyDataType"
+        }
+      },
+      "required": [
+        "keyTag",
+        "alg",
+        "digestType",
+        "digest"
+      ]
+    },
+    "secDNS_keyDataType": {
+      "type": "object",
+      "properties": {
+        "flags": {
+          "type": "integer"
+        },
+        "protocol": {
+          "type": "integer"
+        },
+        "alg": {
+          "type": "integer"
+        },
+        "pubKey": {
+          "$ref": "#/$defs/secDNS_keyType"
+        }
+      },
+      "required": [
+        "flags",
+        "protocol",
+        "alg",
+        "pubKey"
+      ]
+    },
+    "secDNS_updateType": {
+      "type": "object",
+      "properties": {
+        "rem": {
+          "$ref": "#/$defs/secDNS_remType"
+        },
+        "add": {
+          "$ref": "#/$defs/secDNS_dsOrKeyType"
+        },
+        "chg": {
+          "$ref": "#/$defs/secDNS_chgType"
+        },
+        "@urgent": {
+          "type": "boolean"
+        }
+      }
+    },
+    "secDNS_remType": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "all": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "all"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "dsData": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/secDNS_dsDataType"
+              },
+              "minItems": 1
+            }
+          },
+          "required": [
+            "dsData"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "keyData": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/secDNS_keyDataType"
+              },
+              "minItems": 1
+            }
+          },
+          "required": [
+            "keyData"
+          ]
+        }
+      ]
+    },
+    "secDNS_chgType": {
+      "type": "object",
+      "properties": {
+        "maxSigLife": {
+          "$ref": "#/$defs/secDNS_maxSigLifeType"
+        }
+      }
+    }
+  },
+  "anyOf": [
+    {
+      "type": "object",
+      "properties": {
+        "secDNS_create": {
+          "$ref": "#/$defs/secDNS_dsOrKeyType"
+        }
+      },
+      "required": [
+        "secDNS_create"
+      ]
+    },
+    {
+      "type": "object",
+      "properties": {
+        "secDNS_update": {
+          "$ref": "#/$defs/secDNS_updateType"
+        }
+      },
+      "required": [
+        "secDNS_update"
+      ]
+    },
+    {
+      "type": "object",
+      "properties": {
+        "secDNS_infData": {
+          "$ref": "#/$defs/secDNS_dsOrKeyType"
+        }
+      },
+      "required": [
+        "secDNS_infData"
+      ]
+    }
+  ]
+}
