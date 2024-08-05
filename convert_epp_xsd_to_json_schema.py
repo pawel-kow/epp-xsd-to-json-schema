@@ -458,14 +458,6 @@ if __name__ == "__main__":
         dump_file(new_json_schema, 'output', f'{xsd["label"]}.json')
         merge_schemas(json_schema, new_json_schema)
     
-
-    # create entrypoint schema, contains the rpp specific structures
-    logging.info(f'Create RPP schema')
-    rpp = env.get_template('./json-schema/rpp-template.json.j2').render(epp_schema_file='epp-schema.json')
-    rpp_schema = json.loads(rpp)
-    dump_file(rpp_schema, 'output', 'rpp.json')
-    merge_schemas(json_schema, rpp_schema)
-
     logging.info(f'Update merged EPP schema')
     # the individual generated schema may contain external references, to keep schemas small 
     # make debugging easier.
