@@ -1835,6 +1835,26 @@ $defs:
     required:
     - name
     type: object
+  rpp:
+    oneOf:
+    - properties:
+        request:
+          $ref: '#/$defs/epp_commandType'
+      required:
+      - command
+      type: object
+    - properties:
+        response:
+          $ref: '#/$defs/epp_responseType'
+      required:
+      - response
+      type: object
+    - properties:
+        extension:
+          $ref: '#/$defs/epp_extAnyType'
+      required:
+      - extension
+      type: object
   secDNS_chgType:
     properties:
       maxSigLife:

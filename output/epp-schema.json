@@ -3190,6 +3190,43 @@
           "$ref": "#/$defs/secDNS_maxSigLifeType"
         }
       }
+    },
+    "rpp": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "request": {
+              "$ref": "#/$defs/epp_commandType"
+            }
+          },
+          "required": [
+            "command"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "response": {
+              "$ref": "#/$defs/epp_responseType"
+            }
+          },
+          "required": [
+            "response"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "extension": {
+              "$ref": "#/$defs/epp_extAnyType"
+            }
+          },
+          "required": [
+            "extension"
+          ]
+        }
+      ]
     }
   }
 }
