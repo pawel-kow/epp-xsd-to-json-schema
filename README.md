@@ -5,7 +5,7 @@
 - checkout the code including submodules
 - Install python and create virtual environment
 - restore dependencies from requirements.txt
-- run convert.py
+- run convert_epp_xsd_to_json_schema.py
 
 ## Generated schemas
 
@@ -14,6 +14,7 @@ The schemas are generated under `/output`
 | Name  | Description  |
 |---|---|
 | rpp.json  | Main entrypoint contains custom RPP structures  |
+| rpp_merged.json  | Merged version of RPP schema  |
 | base.json | Core EPP protcol structures
 | shared.json | Shared EPP structures
 | epp-schema.json  | Merged schema containing all EPP structures

@@ -1841,7 +1841,7 @@ $defs:
         request:
           $ref: '#/$defs/epp_commandType'
       required:
-      - command
+      - request
       type: object
     - properties:
         response:

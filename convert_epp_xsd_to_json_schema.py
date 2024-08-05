@@ -445,6 +445,7 @@ def update_extensions(json_schema):
 if __name__ == "__main__":
 
     json_schema = new_schema()
+    new_schemas = []
     
     for xsd in xsd_files:
         current_xsd = xsd
@@ -453,6 +454,7 @@ if __name__ == "__main__":
         # external references to other json schemas so each 
         # generated schema contains only the tyopes declared in the converted xsd
         new_json_schema = xsd_to_json_schema(xsd['file'])
+        new_schemas += [new_json_schema]
         dump_file(new_json_schema, 'output', f'{xsd["label"]}.json')
         merge_schemas(json_schema, new_json_schema)
     
@@ -475,6 +477,15 @@ if __name__ == "__main__":
     dump_file(json_schema, 'output', 'epp-schema.json')
     dump_file(json_schema, 'output', 'epp-schema.yaml', False)
 
+    # create entrypoint schema, contains the rpp specific structures
+    logging.info(f'Create RPP schema')
+    rpp = json.loads(env.get_template('./json-schema/rpp-template.json.j2').render(epp_schema_file='epp-schema.json'))
+    dump_file(rpp, 'output', 'rpp.json')
 
-
-    
+    logging.info(f'Merge RPP schema to a flat file')
+    for s in new_schemas:
+        merge_schemas(rpp, s)
+    update_refs(rpp)
+    update_extensions(rpp)
+    dump_file(rpp, 'output', 'rpp_merged.json')
+    dump_file(rpp, 'output', 'rpp_merged.yaml', False)

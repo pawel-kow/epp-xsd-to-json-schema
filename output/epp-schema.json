@@ -3201,7 +3201,7 @@
             }
           },
           "required": [
-            "command"
+            "request"
           ]
         },
         {
